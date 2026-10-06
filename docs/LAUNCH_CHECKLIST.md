@@ -1,0 +1,27 @@
+# LAUNCH_CHECKLIST
+
+- [ ] Dominio y HTTPS configurados; `NEXT_PUBLIC_APP_URL` correcto.
+- [ ] DNS de Resend: SPF, DKIM y DMARC publicados y verificados.
+- [ ] `OWNER_EMAIL` y `ADMIN_EMAILS` de producción configurados.
+- [ ] Supabase migrado con RLS deny-by-default; service role solo server-side.
+- [ ] Drive service account comparte solo la carpeta requerida; sync/checksum PASS.
+- [ ] Secretos en Vercel/Netlify, ninguno en repositorio.
+- [ ] Turnstile y rate limit probados.
+- [ ] PostHog no recibe email ni respuestas clínicas.
+- [ ] Sentry redacta payload sensible.
+- [ ] Política de privacidad, términos, aviso de cribado y mecanismo de derechos publicados.
+- [ ] Revisión legal de FINDRISC/LA-FINDRISC cerrada o fallback aprobado.
+- [ ] Umbrales preliminares se muestran como preliminares.
+- [ ] ES/EN/PT revisados por contenido.
+- [ ] 29/29 válidos + 9/9 inválidos pasan en TS.
+- [ ] Playwright E2E validation PASS.
+- [ ] Stripe sigue apagado salvo gate de tracción aprobado.
+- [ ] Lighthouse móvil >=90 en Performance, Accessibility, Best Practices y SEO.
+- [ ] p95 calculate/preview <2 s.
+- [ ] PDF real generado, abierto y descargado.
+- [ ] Email real de confirmación y owner probado con fixture sintético.
+- [ ] `/admin` bloquea no admins y reenvío funciona.
+- [ ] Export/delete probado con fixture sintético.
+- [ ] Backup/last-known-good de Drive probado.
+- [ ] Analytics funnel visible.
+- [ ] `docs/final_audit.md` PASS.

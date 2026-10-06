@@ -1,0 +1,203 @@
+openapi: 3.1.0
+info:
+  title: GlucoPredict API
+  version: 4.0.0
+  description: API server-side para cálculo, solicitudes de informe, admin y Stripe. No diagnóstico.
+servers:
+  - url: /api
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        '200':
+          description: OK
+  /calculate:
+    post:
+      operationId: calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateRequest'
+      responses:
+        '200':
+          description: Resultado calculado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculationResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /report-request:
+    post:
+      operationId: createReportRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequestInput'
+      responses:
+        '201':
+          description: Solicitud creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportRequestResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Idempotency conflict
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /report/{token}:
+    get:
+      operationId: getPrivateReport
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string, minLength: 32 }
+      responses:
+        '200':
+          description: PDF o metadata privada del informe
+        '401':
+          description: Token inválido o expirado
+        '404':
+          description: Informe no encontrado
+  /admin/leads:
+    get:
+      operationId: adminListLeads
+      security: [{ adminSession: [] }]
+      parameters:
+        - name: cursor
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+          description: Lista paginada de leads y funnel
+        '403':
+          description: No autorizado
+  /admin/leads/{id}/resend:
+    post:
+      operationId: adminResendReport
+      security: [{ adminSession: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '202':
+          description: Reenvío aceptado
+        '403':
+          description: No autorizado
+        '404':
+          description: Lead no encontrado
+  /stripe/checkout:
+    post:
+      operationId: createStripeCheckout
+      description: Disponible solo cuando MONETIZATION_MODE=stripe.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [report_request_id]
+              properties:
+                report_request_id: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Checkout session
+        '404':
+          description: Feature deshabilitado o recurso no encontrado
+  /stripe/webhook:
+    post:
+      operationId: stripeWebhook
+      description: Requiere firma Stripe válida; idempotente por event id.
+      responses:
+        '200':
+          description: Evento procesado o ya procesado
+        '400':
+          description: Firma/payload inválido
+components:
+  securitySchemes:
+    adminSession:
+      type: http
+      scheme: bearer
+  responses:
+    BadRequest:
+      description: JSON inválido o contrato estricto incumplido
+    TooManyRequests:
+      description: Rate limit excedido
+  schemas:
+    CalculateRequest:
+      type: object
+      additionalProperties: false
+      required: [inputs]
+      properties:
+        country_code:
+          type: string
+          enum: [PE, MX, BR, CO, ES, DEFAULT_LATAM]
+          default: DEFAULT_LATAM
+        locale:
+          type: string
+          enum: [es, en, pt]
+        inputs:
+          $ref: './inputs.schema.json'
+    CalculationResult:
+      type: object
+      required: [model_version, model_variant, country_code, bmi, score, risk_band, followup_threshold, lab_followup_recommended, components, modifiable_scenario]
+      properties:
+        model_version: { type: string }
+        model_variant: { type: string, enum: [LA_FINDRISC, FINDRISC] }
+        country_code: { type: string }
+        bmi: { type: number }
+        score: { type: integer, minimum: 0, maximum: 26 }
+        risk_band:
+          type: string
+          enum: [bajo, ligeramente_elevado, moderado, alto, muy_alto]
+        reference_10y_pct: { type: number }
+        reference_scope: { type: string }
+        followup_threshold: { type: integer }
+        lab_followup_recommended: { type: boolean }
+        components:
+          type: object
+          additionalProperties: { type: integer }
+        modifiable_scenario:
+          type: object
+          required: [best_case_score_under_score_rules, removable_points, causal_claim]
+          properties:
+            best_case_score_under_score_rules: { type: integer }
+            removable_points: { type: integer }
+            next_bmi_threshold: { type: [number, 'null'] }
+            approx_weight_kg_at_next_bmi_threshold: { type: [number, 'null'] }
+            causal_claim: { type: boolean, const: false }
+        disclaimer: { type: string }
+    ReportRequestInput:
+      type: object
+      additionalProperties: false
+      required: [email, consent_report_delivery, calculation_id, locale, idempotency_key, turnstile_token]
+      properties:
+        email: { type: string, format: email, maxLength: 254 }
+        consent_report_delivery: { type: boolean, const: true }
+        consent_owner_copy: { type: boolean, default: false }
+        consent_waitlist: { type: boolean, default: false }
+        calculation_id: { type: string, format: uuid }
+        locale: { type: string, enum: [es, en, pt] }
+        idempotency_key: { type: string, minLength: 16, maxLength: 128 }
+        turnstile_token: { type: string, minLength: 1 }
+    ReportRequestResponse:
+      type: object
+      required: [id, status]
+      properties:
+        id: { type: string, format: uuid }
+        status:
+          type: string
+          enum: [requested, generating, ready, delivered, failed]

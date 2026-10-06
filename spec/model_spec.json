@@ -1,0 +1,393 @@
+{
+  "schema_version": "1.0",
+  "model_version": "2.0",
+  "app": "GlucoPredict",
+  "objective": {
+    "primary": "Calcular un score de cribado reproducible FINDRISC/LA-FINDRISC para orientar si conviene realizar una prueba confirmatoria.",
+    "not_objectives": [
+      "Diagnosticar diabetes o prediabetes",
+      "Generar una probabilidad individual calibrada",
+      "Predecir picos de glucosa por comida",
+      "Estimar efecto causal de cambios de estilo de vida"
+    ]
+  },
+  "primary_model": {
+    "name": "LA-FINDRISC/FINDRISC parametrizado por país",
+    "formula_math": "S = P_age(age) + P_BMI(round(weight_kg/(height_m^2),6)) + P_waist(sex, waist_cm, variant) + P_activity(activity) + P_diet(daily_fruit_veg) + P_bp(bp_med) + P_glucose(high_glucose_history) + P_family(family_history)",
+    "score_range": [
+      0,
+      26
+    ],
+    "bmi_formula": "BMI = weight_kg / (height_cm/100)^2",
+    "pseudocode": [
+      "country = inputs.country_code if provided by runtime else DEFAULT_LATAM",
+      "variant = country profile model_variant",
+      "bmi = round(weight_kg / (height_cm/100)^2, 2); bmi_for_scoring = round(raw_bmi, 6)",
+      "score = age_points + bmi_points + waist_points + activity_points + diet_points + bp_points + glucose_points + family_points",
+      "risk_band = band(score)",
+      "reference_10y_pct = historical FINDRISC band reference ONLY; never personalized probability",
+      "lab_followup_recommended = score >= country_followup_threshold",
+      "modifiable_scenario = deterministic recomputation of score-rule levers using bmi_for_scoring for BMI thresholds; causal_claim = false"
+    ],
+    "variants": {
+      "LA_FINDRISC": {
+        "markets": [
+          "PE",
+          "MX",
+          "BR",
+          "CO",
+          "DEFAULT_LATAM"
+        ],
+        "waist_rule": {
+          "female": [
+            {
+              "condition": "waist_cm < 90",
+              "points": 0
+            },
+            {
+              "condition": "waist_cm >= 90",
+              "points": 4
+            }
+          ],
+          "male": [
+            {
+              "condition": "waist_cm < 94",
+              "points": 0
+            },
+            {
+              "condition": "waist_cm >= 94",
+              "points": 4
+            }
+          ]
+        }
+      },
+      "FINDRISC": {
+        "markets": [
+          "ES"
+        ],
+        "waist_rule": {
+          "female": [
+            {
+              "condition": "waist_cm < 80",
+              "points": 0
+            },
+            {
+              "condition": "80 <= waist_cm < 88",
+              "points": 3
+            },
+            {
+              "condition": "waist_cm >= 88",
+              "points": 4
+            }
+          ],
+          "male": [
+            {
+              "condition": "waist_cm < 94",
+              "points": 0
+            },
+            {
+              "condition": "94 <= waist_cm < 102",
+              "points": 3
+            },
+            {
+              "condition": "waist_cm >= 102",
+              "points": 4
+            }
+          ]
+        }
+      }
+    }
+  },
+  "variables": [
+    {
+      "name": "age",
+      "type": "integer",
+      "unit": "years",
+      "valid_product_range": [
+        18,
+        80
+      ],
+      "points": "<45:0; 45-54:2; 55-64:3; >=65:4"
+    },
+    {
+      "name": "height_cm",
+      "type": "number",
+      "unit": "cm",
+      "valid_product_range": [
+        120,
+        220
+      ],
+      "role": "BMI only"
+    },
+    {
+      "name": "weight_kg",
+      "type": "number",
+      "unit": "kg",
+      "valid_product_range": [
+        35,
+        250
+      ],
+      "role": "BMI only"
+    },
+    {
+      "name": "waist_cm",
+      "type": "number",
+      "unit": "cm",
+      "valid_product_range": [
+        50,
+        180
+      ],
+      "role": "waist score"
+    },
+    {
+      "name": "waist_threshold_sex",
+      "type": "enum",
+      "unit": "n/a",
+      "values": [
+        "female",
+        "male"
+      ],
+      "note": "Solo selecciona el umbral antropométrico publicado; no se infiere identidad de género."
+    },
+    {
+      "name": "physical_activity_30m_daily",
+      "type": "boolean",
+      "unit": "yes/no",
+      "points": "true:0; false:2"
+    },
+    {
+      "name": "fruit_veg_daily",
+      "type": "boolean",
+      "unit": "yes/no",
+      "points": "true:0; false:1"
+    },
+    {
+      "name": "antihypertensive_medication",
+      "type": "boolean",
+      "unit": "yes/no",
+      "points": "false:0; true:2"
+    },
+    {
+      "name": "history_high_glucose",
+      "type": "boolean",
+      "unit": "yes/no",
+      "points": "false:0; true:5"
+    },
+    {
+      "name": "family_history",
+      "type": "enum",
+      "unit": "n/a",
+      "values": [
+        "none",
+        "second_degree",
+        "first_degree"
+      ],
+      "points": "0/3/5"
+    }
+  ],
+  "parameters": {
+    "age_points": {
+      "<45": 0,
+      "45-54": 2,
+      "55-64": 3,
+      ">=65": 4
+    },
+    "bmi_points": {
+      "<25": 0,
+      "25-<30": 1,
+      ">=30": 3
+    },
+    "activity_points": {
+      "true": 0,
+      "false": 2
+    },
+    "diet_points": {
+      "true": 0,
+      "false": 1
+    },
+    "bp_points": {
+      "false": 0,
+      "true": 2
+    },
+    "high_glucose_points": {
+      "false": 0,
+      "true": 5
+    },
+    "family_points": {
+      "none": 0,
+      "second_degree": 3,
+      "first_degree": 5
+    },
+    "bands": [
+      {
+        "min": 0,
+        "max": 6,
+        "label": "bajo",
+        "historical_reference_10y_pct": 1
+      },
+      {
+        "min": 7,
+        "max": 11,
+        "label": "ligeramente_elevado",
+        "historical_reference_10y_pct": 4
+      },
+      {
+        "min": 12,
+        "max": 14,
+        "label": "moderado",
+        "historical_reference_10y_pct": 17
+      },
+      {
+        "min": 15,
+        "max": 20,
+        "label": "alto",
+        "historical_reference_10y_pct": 33
+      },
+      {
+        "min": 21,
+        "max": 26,
+        "label": "muy_alto",
+        "historical_reference_10y_pct": 50
+      }
+    ],
+    "followup_thresholds": {
+      "PE": {
+        "value": 11,
+        "status": "verificado",
+        "source": "M01",
+        "scope": "549 trabajadores hospitalarios; screening de disglucemia no diagnosticada"
+      },
+      "MX": {
+        "value": 12,
+        "status": "preliminar",
+        "source": "fallback de estrategia; validar localmente"
+      },
+      "BR": {
+        "value": 12,
+        "status": "preliminar",
+        "source": "fallback de estrategia; validar localmente"
+      },
+      "CO": {
+        "value": 12,
+        "status": "preliminar",
+        "source": "fallback conservador; M01 cita evidencia colombiana con otros cortes; validar localmente"
+      },
+      "ES": {
+        "value": 12,
+        "status": "preliminar",
+        "source": "fallback; validar localmente"
+      },
+      "DEFAULT_LATAM": {
+        "value": 12,
+        "status": "preliminar",
+        "source": "fallback"
+      }
+    }
+  },
+  "uncertainty": {
+    "type": "scenario_and_external_validation",
+    "primary_display": "No se muestra intervalo probabilístico individual porque no hay calibración por país.",
+    "evidence": [
+      {
+        "market": "PE",
+        "outcome": "disglucemia no diagnosticada",
+        "model": "LA-FINDRISC",
+        "auroc": 0.715,
+        "auroc_ci95": [
+          0.658,
+          0.772
+        ],
+        "threshold": 11,
+        "sensitivity": 0.786,
+        "specificity": 0.517,
+        "source": "M01"
+      },
+      {
+        "market": "PE",
+        "outcome": "disglucemia no diagnosticada",
+        "model": "FINDRISC",
+        "auroc": 0.692,
+        "auroc_ci95": [
+          0.632,
+          0.752
+        ],
+        "threshold": 12,
+        "sensitivity": 0.704,
+        "specificity": 0.539,
+        "source": "M01"
+      }
+    ],
+    "scenarios": [
+      "score actual",
+      "score-regla con actividad diaria >=30 min",
+      "score-regla con fruta/verdura diaria",
+      "score-regla con cintura debajo de umbral",
+      "score-regla con BMI justo debajo del siguiente umbral cuando aplica"
+    ]
+  },
+  "sensitivity": {
+    "method": "one-factor-at-a-time sobre puntos discretos",
+    "max_point_effects": {
+      "history_high_glucose": 5,
+      "family_history": 5,
+      "age": 4,
+      "waist": 4,
+      "bmi": 3,
+      "physical_activity": 2,
+      "antihypertensive": 2,
+      "fruit_veg": 1
+    },
+    "warning": "Los puntos son contribuciones a la regla, no efectos causales ni magnitudes de cambio de riesgo."
+  },
+  "assumptions": [
+    "La app recibe country_code como contexto de runtime; no se pide al usuario como uno de los 8 inputs.",
+    "height/weight/waist se convierten a métrico antes del cálculo.",
+    "El redondeo para umbrales de BMI usa 6 decimales para evitar errores binarios en valores frontera.",
+    "La referencia porcentual histórica se etiqueta explícitamente como no personalizada.",
+    "No se usa LLM en cálculo de score, banda, CTA ni escenarios.",
+    "Los escenarios de BMI usan el mismo BMI redondeado a 6 decimales que el scoring para decidir el siguiente umbral; evita divergencias en fronteras 25/30."
+  ],
+  "validity_range": {
+    "product_age": [
+      18,
+      80
+    ],
+    "published_peru_2024_sample_age": [
+      20,
+      70
+    ],
+    "markets_with_local_threshold_validation": [
+      "PE"
+    ],
+    "markets_requiring_local_validation": [
+      "MX",
+      "BR",
+      "CO",
+      "ES"
+    ],
+    "excluded_use_cases": [
+      "embarazo para interpretación clínica",
+      "diabetes ya diagnosticada como herramienta diagnóstica",
+      "urgencias",
+      "decisión terapéutica"
+    ]
+  },
+  "sources": [
+    "M01",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M09"
+  ],
+  "implementation": {
+    "reference_engine": "engine_reference.py",
+    "parameter_store": "drive/base/base_glucopredict.xlsx",
+    "tests": "test_vectors.json",
+    "excel_engine_sheet": "Motor",
+    "qa_fix_revision": "2026-10-03",
+    "input_validation": "strict_json_contract_no_boolean_or_integer_coercion",
+    "bmi_scenario_threshold_basis": "bmi_for_scoring_rounded_6_decimals"
+  }
+}

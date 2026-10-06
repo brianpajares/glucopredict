@@ -1,0 +1,330 @@
+{
+  "meta": {
+    "app_name": {
+      "es": "GlucoPredict",
+      "en": "GlucoPredict",
+      "pt": "GlucoPredict"
+    },
+    "tagline": {
+      "es": "Tu score de riesgo. Una siguiente acción clara.",
+      "en": "Your risk score. One clear next step.",
+      "pt": "Seu score de risco. Um próximo passo claro."
+    }
+  },
+  "landing": {
+    "eyebrow": {
+      "es": "Evaluación de cribado en menos de 90 s",
+      "en": "Screening assessment in under 90 seconds",
+      "pt": "Avaliação de triagem em menos de 90 s"
+    },
+    "headline": {
+      "es": "¿Conviene confirmar tu riesgo con una prueba?",
+      "en": "Should you confirm your risk with a blood test?",
+      "pt": "Vale a pena confirmar seu risco com um exame?"
+    },
+    "body": {
+      "es": "Calcula un score FINDRISC auditable con datos que ya conoces. No diagnostica diabetes ni muestra una probabilidad personal.",
+      "en": "Calculate an auditable FINDRISC score from information you already know. It does not diagnose diabetes or show a personal probability.",
+      "pt": "Calcule um score FINDRISC auditável com dados que você já conhece. Não diagnostica diabetes nem mostra uma probabilidade pessoal."
+    },
+    "cta": {
+      "es": "Calcular mi score",
+      "en": "Calculate my score",
+      "pt": "Calcular meu score"
+    },
+    "trust": {
+      "es": "Sin sensor · Sin laboratorio · Metodología y fuentes visibles",
+      "en": "No sensor · No lab required · Methodology and sources visible",
+      "pt": "Sem sensor · Sem laboratório · Metodologia e fontes visíveis"
+    }
+  },
+  "common": {
+    "continue": {
+      "es": "Continuar",
+      "en": "Continue",
+      "pt": "Continuar"
+    },
+    "back": {
+      "es": "Volver",
+      "en": "Back",
+      "pt": "Voltar"
+    },
+    "progress": {
+      "es": "Paso {current} de {total}",
+      "en": "Step {current} of {total}",
+      "pt": "Etapa {current} de {total}"
+    },
+    "required": {
+      "es": "Este dato es necesario para calcular el score.",
+      "en": "This information is required to calculate the score.",
+      "pt": "Este dado é necessário para calcular o score."
+    },
+    "loading": {
+      "es": "Calculando tu score…",
+      "en": "Calculating your score…",
+      "pt": "Calculando seu score…"
+    },
+    "loading_sub": {
+      "es": "Aplicando la regla publicada y el perfil de tu mercado.",
+      "en": "Applying the published rule and your market profile.",
+      "pt": "Aplicando a regra publicada e o perfil do seu mercado."
+    },
+    "retry": {
+      "es": "Reintentar",
+      "en": "Try again",
+      "pt": "Tentar novamente"
+    }
+  },
+  "questions": {
+    "age": {
+      "title": {
+        "es": "¿Cuántos años tienes?",
+        "en": "How old are you?",
+        "pt": "Qual é a sua idade?"
+      },
+      "help": {
+        "es": "Edad en años cumplidos.",
+        "en": "Age in completed years.",
+        "pt": "Idade em anos completos."
+      }
+    },
+    "sex": {
+      "title": {
+        "es": "¿Qué umbral de cintura corresponde a tu sexo biológico?",
+        "en": "Which waist threshold corresponds to your biological sex?",
+        "pt": "Qual limiar de cintura corresponde ao seu sexo biológico?"
+      },
+      "female": {
+        "es": "Femenino",
+        "en": "Female",
+        "pt": "Feminino"
+      },
+      "male": {
+        "es": "Masculino",
+        "en": "Male",
+        "pt": "Masculino"
+      },
+      "help": {
+        "es": "Solo se usa para aplicar el corte antropométrico publicado.",
+        "en": "Used only to apply the published anthropometric cut-off.",
+        "pt": "Usado apenas para aplicar o limiar antropométrico publicado."
+      }
+    },
+    "height": {
+      "title": {
+        "es": "¿Cuál es tu altura?",
+        "en": "What is your height?",
+        "pt": "Qual é a sua altura?"
+      },
+      "unit": {
+        "es": "cm",
+        "en": "cm",
+        "pt": "cm"
+      }
+    },
+    "weight": {
+      "title": {
+        "es": "¿Cuál es tu peso?",
+        "en": "What is your weight?",
+        "pt": "Qual é o seu peso?"
+      },
+      "unit": {
+        "es": "kg",
+        "en": "kg",
+        "pt": "kg"
+      }
+    },
+    "waist": {
+      "title": {
+        "es": "¿Cuánto mide tu cintura?",
+        "en": "What is your waist measurement?",
+        "pt": "Quanto mede sua cintura?"
+      },
+      "help": {
+        "es": "Mide a mitad entre la última costilla y la cresta ilíaca, sin apretar la cinta.",
+        "en": "Measure midway between the last rib and iliac crest, without tightening the tape.",
+        "pt": "Meça no meio entre a última costela e a crista ilíaca, sem apertar a fita."
+      }
+    },
+    "activity": {
+      "title": {
+        "es": "¿Haces al menos 30 minutos de actividad física al día?",
+        "en": "Do you get at least 30 minutes of physical activity a day?",
+        "pt": "Você faz pelo menos 30 minutos de atividade física por dia?"
+      }
+    },
+    "fruit": {
+      "title": {
+        "es": "¿Comes frutas o verduras todos los días?",
+        "en": "Do you eat fruit or vegetables every day?",
+        "pt": "Você come frutas ou verduras todos os dias?"
+      }
+    },
+    "bp": {
+      "title": {
+        "es": "¿Tomas regularmente medicación para presión alta?",
+        "en": "Do you regularly take medication for high blood pressure?",
+        "pt": "Você usa regularmente medicamento para pressão alta?"
+      }
+    },
+    "glucose": {
+      "title": {
+        "es": "¿Alguna vez te dijeron que tu glucosa estaba alta?",
+        "en": "Have you ever been told your blood glucose was high?",
+        "pt": "Alguma vez disseram que sua glicose estava alta?"
+      },
+      "help": {
+        "es": "Por ejemplo, en un examen, enfermedad o embarazo.",
+        "en": "For example, during a test, illness, or pregnancy.",
+        "pt": "Por exemplo, em um exame, doença ou gravidez."
+      }
+    },
+    "family": {
+      "title": {
+        "es": "¿Hay diabetes en tu familia?",
+        "en": "Does diabetes run in your family?",
+        "pt": "Há diabetes na sua família?"
+      },
+      "none": {
+        "es": "No",
+        "en": "No",
+        "pt": "Não"
+      },
+      "second": {
+        "es": "Sí, familiares de segundo grado",
+        "en": "Yes, second-degree relatives",
+        "pt": "Sim, parentes de segundo grau"
+      },
+      "first": {
+        "es": "Sí, padre/madre, hermano/a o hijo/a",
+        "en": "Yes, parent, sibling, or child",
+        "pt": "Sim, pai/mãe, irmão/irmã ou filho/a"
+      }
+    },
+    "yes": {
+      "es": "Sí",
+      "en": "Yes",
+      "pt": "Sim"
+    },
+    "no": {
+      "es": "No",
+      "en": "No",
+      "pt": "Não"
+    }
+  },
+  "preview": {
+    "title": {
+      "es": "Tu score es {score} de 26",
+      "en": "Your score is {score} out of 26",
+      "pt": "Seu score é {score} de 26"
+    },
+    "band": {
+      "es": "Banda: {band}",
+      "en": "Band: {band}",
+      "pt": "Faixa: {band}"
+    },
+    "not_probability": {
+      "es": "Esta banda es una referencia histórica del modelo, no tu probabilidad personal.",
+      "en": "This band is a historical model reference, not your personal probability.",
+      "pt": "Esta faixa é uma referência histórica do modelo, não sua probabilidade pessoal."
+    },
+    "followup_yes": {
+      "es": "Tu score alcanza el umbral de seguimiento usado en este perfil. Conviene confirmar con una prueba clínica y un profesional de salud.",
+      "en": "Your score reaches the follow-up threshold used for this profile. Consider confirming with an appropriate blood test and a health professional.",
+      "pt": "Seu score atinge o limiar de acompanhamento usado neste perfil. Vale confirmar com um exame adequado e um profissional de saúde."
+    },
+    "followup_no": {
+      "es": "Tu score no alcanza el umbral operativo de seguimiento de este perfil. Un score bajo no descarta diabetes o prediabetes.",
+      "en": "Your score does not reach this profile's operational follow-up threshold. A low score does not rule out diabetes or prediabetes.",
+      "pt": "Seu score não atinge o limiar operacional de acompanhamento deste perfil. Um score baixo não exclui diabetes ou pré-diabetes."
+    },
+    "top_factor": {
+      "es": "Factor que más puntos aporta: {factor}",
+      "en": "Highest-point factor: {factor}",
+      "pt": "Fator com mais pontos: {factor}"
+    },
+    "locked_title": {
+      "es": "Tu informe completo ya tiene {count} secciones calculadas",
+      "en": "Your full report already has {count} calculated sections",
+      "pt": "Seu relatório completo já tem {count} seções calculadas"
+    },
+    "locked_body": {
+      "es": "Desbloquea el desglose de 8 factores, escenarios de la regla, contexto del país y resumen para consulta.",
+      "en": "Unlock the 8-factor breakdown, rule scenarios, country context, and doctor-ready summary.",
+      "pt": "Desbloqueie o detalhamento de 8 fatores, cenários da regra, contexto do país e resumo para consulta."
+    },
+    "cta": {
+      "es": "Ver mi informe completo",
+      "en": "View my full report",
+      "pt": "Ver meu relatório completo"
+    }
+  },
+  "gate": {
+    "phase1_title": {
+      "es": "Recibe tu informe completo",
+      "en": "Get your full report",
+      "pt": "Receba seu relatório completo"
+    },
+    "phase1_body": {
+      "es": "Te enviaremos un enlace privado al informe. No compartimos tus respuestas identificables con terceros por defecto.",
+      "en": "We’ll email you a private link to your report. We do not share identifiable answers with third parties by default.",
+      "pt": "Enviaremos um link privado para seu relatório. Não compartilhamos respostas identificáveis com terceiros por padrão."
+    },
+    "email": {
+      "es": "Tu email",
+      "en": "Your email",
+      "pt": "Seu email"
+    },
+    "consent": {
+      "es": "Acepto recibir este informe y las comunicaciones necesarias para entregarlo.",
+      "en": "I agree to receive this report and the communications needed to deliver it.",
+      "pt": "Aceito receber este relatório e as comunicações necessárias para entregá-lo."
+    },
+    "cta": {
+      "es": "Enviar mi informe",
+      "en": "Send my report",
+      "pt": "Enviar meu relatório"
+    }
+  },
+  "success": {
+    "title": {
+      "es": "Informe preparado",
+      "en": "Report ready",
+      "pt": "Relatório pronto"
+    },
+    "body": {
+      "es": "En el producto real, este paso enviaría un enlace privado. En este prototipo puedes abrir el informe de ejemplo ahora.",
+      "en": "In the live product, this step would send a private link. In this prototype you can open the sample report now.",
+      "pt": "No produto real, esta etapa enviaria um link privado. Neste protótipo você pode abrir o relatório de exemplo agora."
+    },
+    "cta": {
+      "es": "Abrir informe",
+      "en": "Open report",
+      "pt": "Abrir relatório"
+    }
+  },
+  "safety": {
+    "short": {
+      "es": "Herramienta de cribado, no diagnóstico. No sirve para urgencias ni decisiones de medicación.",
+      "en": "Screening tool, not a diagnosis. Not for emergencies or medication decisions.",
+      "pt": "Ferramenta de triagem, não diagnóstico. Não serve para urgências nem decisões de medicação."
+    },
+    "urgent": {
+      "es": "Si tienes síntomas agudos, estás embarazada o ya tienes diabetes diagnosticada, usa orientación clínica apropiada en lugar de este resultado.",
+      "en": "If you have acute symptoms, are pregnant, or already have diagnosed diabetes, use appropriate clinical care rather than this result.",
+      "pt": "Se você tem sintomas agudos, está grávida ou já tem diabetes diagnosticado, procure orientação clínica apropriada em vez de usar este resultado."
+    }
+  },
+  "errors": {
+    "range": {
+      "es": "Revisa el valor y las unidades.",
+      "en": "Check the value and units.",
+      "pt": "Revise o valor e as unidades."
+    },
+    "generic": {
+      "es": "No pudimos calcular el resultado con estos datos. Revisa tus respuestas e inténtalo de nuevo.",
+      "en": "We couldn’t calculate a result from these inputs. Check your answers and try again.",
+      "pt": "Não foi possível calcular o resultado com esses dados. Revise suas respostas e tente novamente."
+    }
+  }
+}

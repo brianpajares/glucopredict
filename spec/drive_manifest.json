@@ -1,0 +1,100 @@
+{
+  "app": "GlucoPredict",
+  "slug": "glucopredict",
+  "version": "2.0.8",
+  "generated_at": "2026-10-03",
+  "root": "/Apps/glucopredict/",
+  "files": [
+    {
+      "file": "base_glucopredict.xlsx",
+      "drive_path": "/Apps/glucopredict/base/base_glucopredict.xlsx",
+      "relative_path": "drive/base/base_glucopredict.xlsx",
+      "purpose": "Fuente de verdad de parámetros, tablas, fórmulas, casos de prueba y fuentes",
+      "format": "xlsx",
+      "reader": "app+build",
+      "sha256": "10880b29251da70c40eb8ef72197ead119b930d77faaa889ba7cc97c1ec83bd4",
+      "version": "2.0.8"
+    },
+    {
+      "file": "model_params_v2.json",
+      "drive_path": "/Apps/glucopredict/model/model_params_v2.json",
+      "relative_path": "drive/model/model_params_v2.json",
+      "purpose": "Parámetros serializados para build/runtime alternativo",
+      "format": "json",
+      "reader": "app+build",
+      "sha256": "d229a4caa2b5b47986cf071e580a0e10de49507c0ce58258d60d366149b94462",
+      "version": "2.0.8"
+    },
+    {
+      "file": "model_spec.json",
+      "drive_path": "/Apps/glucopredict/model/model_spec.json",
+      "relative_path": "drive/model/model_spec.json",
+      "purpose": "Especificación exacta del modelo y supuestos",
+      "format": "json",
+      "reader": "build",
+      "sha256": "f692664bba6e924a0f964142fb0c941173ffef247e8c839bca21e532e4e97900",
+      "version": "2.0.8"
+    },
+    {
+      "file": "engine_reference.py",
+      "drive_path": "/Apps/glucopredict/model/engine_reference.py",
+      "relative_path": "drive/model/engine_reference.py",
+      "purpose": "Implementación pura de referencia calculate(inputs, base) -> outputs",
+      "format": "python",
+      "reader": "build",
+      "sha256": "8efcd54c2ecaead3749cb24b5cc17f9c0abc73fd8efea937aab5eadb9b6e81a7",
+      "version": "2.0.8"
+    },
+    {
+      "file": "test_vectors.json",
+      "drive_path": "/Apps/glucopredict/model/test_vectors.json",
+      "relative_path": "drive/model/test_vectors.json",
+      "purpose": "Vectores de prueba con expected generados por código",
+      "format": "json",
+      "reader": "build+QA",
+      "sha256": "3c061d0f2c9c8587c326c2099b032cc09f824dfdec841781d4d72dcd807af793",
+      "version": "2.0.8"
+    },
+    {
+      "file": "inputs.schema.json",
+      "drive_path": "/Apps/glucopredict/model/inputs.schema.json",
+      "relative_path": "drive/model/inputs.schema.json",
+      "purpose": "Contrato JSON Schema de los 8 inputs visibles",
+      "format": "json",
+      "reader": "app+build",
+      "sha256": "81b095a65df5acda457b826455f12c674174ac943b9f1db037466cfcdb001af0",
+      "version": "2.0.8"
+    },
+    {
+      "file": "outputs_spec.json",
+      "drive_path": "/Apps/glucopredict/model/outputs_spec.json",
+      "relative_path": "drive/model/outputs_spec.json",
+      "purpose": "Contrato de outputs y niveles de acceso",
+      "format": "json",
+      "reader": "app+build",
+      "sha256": "49456c9e1d01d3fd5713a94c28bc3e5803ce2ad7b53d41c7de8f72c01b5225a6",
+      "version": "2.0.8"
+    },
+    {
+      "file": "report_template_structure.json",
+      "drive_path": "/Apps/glucopredict/templates/report_template_structure.json",
+      "relative_path": "drive/templates/report_template_structure.json",
+      "purpose": "Estructura del informe ES/EN/PT-BR",
+      "format": "json",
+      "reader": "app+build",
+      "sha256": "474f616c8937b42cf02ec39304b283c73d251dbf9f27ba93c670af6b41495116",
+      "version": "2.0.8"
+    },
+    {
+      "file": "model_card.md",
+      "drive_path": "/Apps/glucopredict/docs/model_card.md",
+      "relative_path": "drive/docs/model_card.md",
+      "purpose": "Contenido 'Cómo funciona' para usuario final",
+      "format": "markdown",
+      "reader": "app+build",
+      "sha256": "6376bcfcfc99c4786856644b9daf7b754925a030fcb8e86709b5c234fee5d4ca",
+      "version": "2.0.8"
+    }
+  ],
+  "integrity_rule": "Verificar SHA-256 antes de publicar/sincronizar. Si cambia un archivo, subir versión y regenerar manifest. Hashes regenerados en Etapa 3 tras QA."
+}

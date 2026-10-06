@@ -1,0 +1,55 @@
+{
+  "version": "2.0",
+  "languages": [
+    "es",
+    "en",
+    "pt-BR"
+  ],
+  "sections": [
+    {
+      "id": "cover",
+      "free": false,
+      "content": "nombre app, versión, fecha, disclaimer"
+    },
+    {
+      "id": "summary",
+      "free": true,
+      "content": "score, banda, gráfico, insight, CTA"
+    },
+    {
+      "id": "factors",
+      "free": false,
+      "content": "desglose 8 componentes"
+    },
+    {
+      "id": "scenarios",
+      "free": false,
+      "content": "escenarios modificables con causal_claim=false"
+    },
+    {
+      "id": "country_context",
+      "free": false,
+      "content": "variante, umbral, evidencia y estado"
+    },
+    {
+      "id": "action_plan",
+      "free": false,
+      "content": "plan educativo 12 semanas"
+    },
+    {
+      "id": "doctor_summary",
+      "free": false,
+      "content": "resumen imprimible sin diagnóstico"
+    },
+    {
+      "id": "methodology",
+      "free": false,
+      "content": "modelo, fuentes, límites, versión"
+    }
+  ],
+  "required_footer": {
+    "es": "Herramienta de cribado; no es diagnóstico ni consejo médico.",
+    "en": "Screening tool; not a diagnosis or medical advice.",
+    "pt-BR": "Ferramenta de triagem; não é diagnóstico nem aconselhamento médico."
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "name": "GlucoPredict Design System",
+    "version": "1.0",
+    "wcag_target": "2.2 AA",
+    "reviewed": "2026-10-03"
+  },
+  "color": {
+    "light": {
+      "bg": "#F7F9FC",
+      "surface": "#FFFFFF",
+      "surface_subtle": "#F9FAFB",
+      "text": "#111827",
+      "text_muted": "#4B5563",
+      "primary": "#0F766E",
+      "primary_hover": "#115E59",
+      "primary_text": "#FFFFFF",
+      "border": "#D1D5DB",
+      "success_bg": "#D1FAE5",
+      "success_text": "#065F46",
+      "warning_bg": "#FEF3C7",
+      "warning_text": "#78350F",
+      "danger_bg": "#FEE2E2",
+      "danger_text": "#991B1B",
+      "focus": "#2563EB",
+      "locked": "#E5E7EB"
+    },
+    "dark": {
+      "bg": "#0B1220",
+      "surface": "#111827",
+      "surface_subtle": "#172033",
+      "text": "#F9FAFB",
+      "text_muted": "#CBD5E1",
+      "primary": "#5EEAD4",
+      "primary_hover": "#99F6E4",
+      "primary_text": "#042F2E",
+      "border": "#334155",
+      "success_bg": "#064E3B",
+      "success_text": "#D1FAE5",
+      "warning_bg": "#78350F",
+      "warning_text": "#FEF3C7",
+      "danger_bg": "#7F1D1D",
+      "danger_text": "#FEE2E2",
+      "focus": "#60A5FA",
+      "locked": "#334155"
+    },
+    "contrast_checks": [
+      {
+        "fg": "#0F766E",
+        "bg": "#FFFFFF",
+        "ratio": 5.47,
+        "result": "AA normal text"
+      },
+      {
+        "fg": "#111827",
+        "bg": "#FFFFFF",
+        "ratio": 17.74,
+        "result": "AAA"
+      },
+      {
+        "fg": "#4B5563",
+        "bg": "#FFFFFF",
+        "ratio": 7.56,
+        "result": "AAA"
+      },
+      {
+        "fg": "#B42318",
+        "bg": "#FFFFFF",
+        "ratio": 6.57,
+        "result": "AA"
+      },
+      {
+        "fg": "#065F46",
+        "bg": "#D1FAE5",
+        "ratio": 6.78,
+        "result": "AA"
+      },
+      {
+        "fg": "#78350F",
+        "bg": "#FEF3C7",
+        "ratio": 8.15,
+        "result": "AAA"
+      },
+      {
+        "fg": "#991B1B",
+        "bg": "#FEE2E2",
+        "ratio": 6.8,
+        "result": "AA"
+      }
+    ]
+  },
+  "typography": {
+    "font_family": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    "mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+    "sizes": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem"
+    },
+    "line_height": {
+      "tight": 1.2,
+      "normal": 1.5,
+      "relaxed": 1.65
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    }
+  },
+  "space": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "5": 20,
+    "6": 24,
+    "8": 32,
+    "10": 40,
+    "12": 48,
+    "16": 64
+  },
+  "radius": {
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "pill": 999
+  },
+  "shadow": {
+    "sm": "0 1px 2px rgba(15,23,42,.06)",
+    "md": "0 8px 24px rgba(15,23,42,.10)",
+    "focus": "0 0 0 3px rgba(37,99,235,.28)"
+  },
+  "breakpoints": {
+    "mobile": 360,
+    "tablet": 768,
+    "desktop": 1280
+  },
+  "motion": {
+    "fast_ms": 120,
+    "normal_ms": 200,
+    "slow_ms": 320,
+    "reduced_motion": "disable non-essential transforms and smooth scrolling"
+  },
+  "layout": {
+    "content_max_px": 1120,
+    "form_max_px": 640,
+    "report_max_px": 880,
+    "tap_target_min_px": 44
+  },
+  "chart": {
+    "score_axis": {
+      "min": 0,
+      "max": 26,
+      "show_marker": true,
+      "show_band_labels": true
+    },
+    "uncertainty_rule": "Nunca convertir bandas históricas en probabilidad personal. Mostrar estado de validación país junto al CTA.",
+    "component_chart": "horizontal bars ordered by points; label exact integer points; no pie chart"
+  }
+}

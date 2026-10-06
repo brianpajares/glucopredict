@@ -1,0 +1,38 @@
+# decisions_log — GlucoPredict
+
+- D01: PIVOT aplicado: de 'glucose spike predictor' a 'risk-to-action screening' no invasivo.
+- D02: Motor del MVP: cálculo determinista, no LLM.
+- D03: Promesa central: saber si conviene confirmar con prueba y ver qué puntos del score son modificables.
+- D04: Prioridad geográfica: México -> Brasil -> Perú; luego Colombia y España.
+- D05: No usar CGM para screening/diagnóstico en MVP; ADA 2026 señala evidencia insuficiente para ese uso.
+- D06: Separar explícitamente 'score scenario' de reducción causal de riesgo.
+- D07: Diseñar referral a A1C/FPG como north star para score alto, no la venta del informe.
+- D08: Localización desde v1 en español, inglés y portugués brasileño.
+- D09: Modelo principal: LA-FINDRISC en PE/MX/BR/CO/DEFAULT_LATAM y FINDRISC original en ES; score 0–26 determinista.
+- D10: Perú usa follow-up threshold >=11 basado en validación PLOS 2024 en 549 trabajadores hospitalarios; no se generaliza como calibración nacional.
+- D11: MX/BR/CO/ES usan threshold >=12 solo como fallback preliminar hasta validación local; la UI debe mostrar estado/fuente.
+- D12: Los porcentajes históricos 1/4/17/33/50 se mantienen solo como referencia poblacional histórica y nunca como probabilidad personalizada.
+- D13: Backup seleccionado: CDC/ADA Prediabetes Risk Test porque CDC Stacks lo marca Public Domain; no se mezcla silenciosamente con el outcome del principal.
+- D14: AUSDRISK descartado para reproducción directa: el sitio oficial indica copyright del Commonwealth y pide contacto para reproducir.
+- D15: January AI descartado como core: API cerrada, outcome distinto y términos que prohíben uso para decisión clínica/diagnóstico.
+- D16: country_code es contexto de runtime y no uno de los 8 inputs visibles; si falta, engine usa DEFAULT_LATAM.
+- D17: Corregido borde numérico de BMI: se redondea a 6 decimales antes de comparar cortes 25/30 para evitar errores de punto flotante.
+- D18: No se entrena ML en v2: no hay un dataset multi-país homogéneo, licenciado y alineado al outcome que justifique reemplazar el score auditable.
+- D19: Monetización usa costes publicados como referencias; no se inventa un costo local de checkout cuando depende del proveedor.
+- D20: Etapa 3 corrige el escenario BMI para usar el mismo BMI redondeado a 6 decimales que el scoring; el score base no cambia.
+- D21: El contrato de runtime se hace estricto: edad entera real, booleanos reales y medidas numéricas finitas; no se admiten coerciones silenciosas.
+- D22: country_code desconocido se normaliza a DEFAULT_LATAM también en la salida.
+- D23: El resultado gratuito siempre incluye score, banda histórica, estado del umbral y CTA de seguridad; el gate/pago monetiza profundidad, no seguridad clínica.
+- D24: UX móvil: 10 pasos, una pregunta por pantalla, progreso real y valor central antes de 90 segundos.
+- D25: Los porcentajes históricos no se presentan como probabilidad personal; escenarios son matemáticos y causal_claim=false.
+- D26: Precios consumidor siguen preliminares aunque PPP esté verificado; requieren test A/B.
+- D27: M03/M09 quedan como licencias corregidas y M07 como no_verificado para reutilización comercial.
+- D28: FINDRISC requiere gate legal pre-lanzamiento para marca/instrumento; fallback CDC Public Domain permanece documentado.
+- D29: Analytics no recibe respuestas clínicas; no persistir inputs de salud en localStorage por defecto.
+- D30: Stage 4 fija MONETIZATION_MODE=validation como default y Stripe detrás de feature flag.
+- D31: Stage 4 conserva el preview gratuito exactamente conforme a outputs_spec.json.
+- D32: Stage 4 condiciona la copia identificable al OWNER_EMAIL a consent_owner_copy; sin ese consentimiento se envía notificación mínima y se usa /admin.
+- D33: Stage 4 usa Supabase con RLS deny-by-default y acceso a datos sensibles solo vía Route Handlers con service role.
+- D34: Stage 4 cifra payloads clínicos persistidos a nivel de aplicación mediante HEALTH_DATA_ENCRYPTION_KEY.
+- D35: Stage 4 fija gate de cobro en preview→email >=30% y >=50 solicitudes en 14 días, además de gates legal/QA/margen.
+- D36: Stage 4 no asigna una tarifa Stripe fija en el PRD; el coste real se mide en test/producción para proteger el margen objetivo.

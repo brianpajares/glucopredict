@@ -1,0 +1,196 @@
+{
+  "version": "1.0",
+  "privacy_rule": "No enviar respuestas de salud ni email como propiedades de analytics. Usar IDs efímeros y agregación.",
+  "events": [
+    {
+      "name": "landing_view",
+      "when": "render landing",
+      "properties": [
+        "locale",
+        "country_profile",
+        "utm_source"
+      ]
+    },
+    {
+      "name": "calculator_start",
+      "when": "CTA principal",
+      "properties": [
+        "locale",
+        "country_profile"
+      ]
+    },
+    {
+      "name": "question_view",
+      "when": "cada paso",
+      "properties": [
+        "question_id",
+        "step_index",
+        "locale"
+      ]
+    },
+    {
+      "name": "question_complete",
+      "when": "respuesta válida y continuar",
+      "properties": [
+        "question_id",
+        "step_index",
+        "input_mode_metric_or_imperial"
+      ],
+      "sensitive_values": "prohibited"
+    },
+    {
+      "name": "validation_error",
+      "when": "dato inválido",
+      "properties": [
+        "question_id",
+        "error_code"
+      ]
+    },
+    {
+      "name": "calculator_complete",
+      "when": "se envían inputs al motor",
+      "properties": [
+        "country_profile",
+        "duration_bucket",
+        "locale"
+      ]
+    },
+    {
+      "name": "result_view",
+      "when": "preview visible",
+      "properties": [
+        "score_band",
+        "followup_recommended",
+        "country_profile",
+        "threshold_status"
+      ],
+      "note": "No enviar score exacto si analytics no está configurado como dato sensible."
+    },
+    {
+      "name": "methodology_open",
+      "when": "usuario abre metodología/fuentes",
+      "properties": [
+        "surface"
+      ]
+    },
+    {
+      "name": "report_unlock_click",
+      "when": "CTA informe completo",
+      "properties": [
+        "score_band",
+        "followup_recommended",
+        "offer_variant"
+      ]
+    },
+    {
+      "name": "email_gate_view",
+      "when": "gate visible",
+      "properties": [
+        "offer_variant",
+        "country_profile"
+      ]
+    },
+    {
+      "name": "email_submit",
+      "when": "solicitud de informe",
+      "properties": [
+        "consent_report_delivery",
+        "offer_variant"
+      ],
+      "sensitive_values": "email prohibited in analytics"
+    },
+    {
+      "name": "payment_view",
+      "when": "checkout fase 2",
+      "properties": [
+        "currency",
+        "price_variant",
+        "country_profile"
+      ]
+    },
+    {
+      "name": "payment_success",
+      "when": "checkout confirmado",
+      "properties": [
+        "currency",
+        "price_variant",
+        "country_profile"
+      ]
+    },
+    {
+      "name": "report_view",
+      "when": "informe abierto",
+      "properties": [
+        "report_version",
+        "country_profile"
+      ]
+    },
+    {
+      "name": "lab_cta_click",
+      "when": "CTA de prueba",
+      "properties": [
+        "country_profile",
+        "threshold_status",
+        "destination_type"
+      ]
+    },
+    {
+      "name": "share_card_create",
+      "when": "tarjeta compartible",
+      "properties": [
+        "score_band",
+        "locale"
+      ],
+      "sensitive_values": "no weight/waist/history/reference_pct"
+    },
+    {
+      "name": "unit_switch",
+      "when": "métrico/imperial",
+      "properties": [
+        "to_system",
+        "question_id"
+      ]
+    },
+    {
+      "name": "language_switch",
+      "when": "cambio idioma",
+      "properties": [
+        "from_locale",
+        "to_locale"
+      ]
+    },
+    {
+      "name": "report_download",
+      "when": "PDF descargado",
+      "properties": [
+        "report_version",
+        "locale"
+      ]
+    },
+    {
+      "name": "privacy_request_click",
+      "when": "export/delete",
+      "properties": [
+        "request_type"
+      ]
+    }
+  ],
+  "funnels": {
+    "activation": [
+      "landing_view",
+      "calculator_start",
+      "calculator_complete",
+      "result_view"
+    ],
+    "report": [
+      "result_view",
+      "report_unlock_click",
+      "email_submit",
+      "report_view"
+    ],
+    "clinical_action": [
+      "result_view",
+      "lab_cta_click"
+    ]
+  }
+}

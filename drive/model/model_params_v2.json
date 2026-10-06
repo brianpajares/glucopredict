@@ -1,0 +1,171 @@
+{
+  "version": "2.0",
+  "source_of_truth": "base/base_glucopredict.xlsx",
+  "model": "LA-FINDRISC/FINDRISC parametrized",
+  "age_points": {
+    "<45": 0,
+    "45-54": 2,
+    "55-64": 3,
+    ">=65": 4
+  },
+  "bmi_points": {
+    "<25": 0,
+    "25-<30": 1,
+    ">=30": 3
+  },
+  "activity_points": {
+    "true": 0,
+    "false": 2
+  },
+  "diet_points": {
+    "true": 0,
+    "false": 1
+  },
+  "bp_points": {
+    "false": 0,
+    "true": 2
+  },
+  "high_glucose_points": {
+    "false": 0,
+    "true": 5
+  },
+  "family_points": {
+    "none": 0,
+    "second_degree": 3,
+    "first_degree": 5
+  },
+  "bands": [
+    {
+      "min": 0,
+      "max": 6,
+      "label": "bajo",
+      "historical_reference_10y_pct": 1
+    },
+    {
+      "min": 7,
+      "max": 11,
+      "label": "ligeramente_elevado",
+      "historical_reference_10y_pct": 4
+    },
+    {
+      "min": 12,
+      "max": 14,
+      "label": "moderado",
+      "historical_reference_10y_pct": 17
+    },
+    {
+      "min": 15,
+      "max": 20,
+      "label": "alto",
+      "historical_reference_10y_pct": 33
+    },
+    {
+      "min": 21,
+      "max": 26,
+      "label": "muy_alto",
+      "historical_reference_10y_pct": 50
+    }
+  ],
+  "variants": {
+    "LA_FINDRISC": {
+      "markets": [
+        "PE",
+        "MX",
+        "BR",
+        "CO",
+        "DEFAULT_LATAM"
+      ],
+      "waist_rule": {
+        "female": [
+          {
+            "condition": "waist_cm < 90",
+            "points": 0
+          },
+          {
+            "condition": "waist_cm >= 90",
+            "points": 4
+          }
+        ],
+        "male": [
+          {
+            "condition": "waist_cm < 94",
+            "points": 0
+          },
+          {
+            "condition": "waist_cm >= 94",
+            "points": 4
+          }
+        ]
+      }
+    },
+    "FINDRISC": {
+      "markets": [
+        "ES"
+      ],
+      "waist_rule": {
+        "female": [
+          {
+            "condition": "waist_cm < 80",
+            "points": 0
+          },
+          {
+            "condition": "80 <= waist_cm < 88",
+            "points": 3
+          },
+          {
+            "condition": "waist_cm >= 88",
+            "points": 4
+          }
+        ],
+        "male": [
+          {
+            "condition": "waist_cm < 94",
+            "points": 0
+          },
+          {
+            "condition": "94 <= waist_cm < 102",
+            "points": 3
+          },
+          {
+            "condition": "waist_cm >= 102",
+            "points": 4
+          }
+        ]
+      }
+    }
+  },
+  "followup_thresholds": {
+    "PE": {
+      "value": 11,
+      "status": "verificado",
+      "source": "M01",
+      "scope": "549 trabajadores hospitalarios; screening de disglucemia no diagnosticada"
+    },
+    "MX": {
+      "value": 12,
+      "status": "preliminar",
+      "source": "fallback de estrategia; validar localmente"
+    },
+    "BR": {
+      "value": 12,
+      "status": "preliminar",
+      "source": "fallback de estrategia; validar localmente"
+    },
+    "CO": {
+      "value": 12,
+      "status": "preliminar",
+      "source": "fallback conservador; M01 cita evidencia colombiana con otros cortes; validar localmente"
+    },
+    "ES": {
+      "value": 12,
+      "status": "preliminar",
+      "source": "fallback; validar localmente"
+    },
+    "DEFAULT_LATAM": {
+      "value": 12,
+      "status": "preliminar",
+      "source": "fallback"
+    }
+  },
+  "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability"
+}

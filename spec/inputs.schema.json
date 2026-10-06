@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://glucopredict.app/schemas/inputs.schema.json",
+  "title": "GlucoPredict — inputs de usuario v2.0",
+  "description": "Ocho campos visibles. El país/mercado llega como contexto de runtime y no se solicita al usuario.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "age",
+    "waist_threshold_sex",
+    "body_measurements",
+    "physical_activity_30m_daily",
+    "fruit_veg_daily",
+    "antihypertensive_medication",
+    "history_high_glucose",
+    "family_history"
+  ],
+  "properties": {
+    "age": {
+      "type": "integer",
+      "minimum": 18,
+      "maximum": 80,
+      "default": 45,
+      "unit": "years",
+      "title": "Edad",
+      "help": {
+        "es": "Tu edad en años cumplidos.",
+        "en": "Your age in completed years.",
+        "pt": "Sua idade em anos completos."
+      },
+      "find_it": {
+        "es": "La sabes de memoria o aparece en tu documento de identidad.",
+        "en": "You usually know it or can find it on your ID.",
+        "pt": "Você geralmente sabe ou encontra no documento de identidade."
+      },
+      "x-title-i18n": {
+        "es": "Edad",
+        "en": "Age",
+        "pt": "Idade"
+      }
+    },
+    "waist_threshold_sex": {
+      "type": "string",
+      "enum": [
+        "female",
+        "male"
+      ],
+      "title": "Umbral de cintura",
+      "help": {
+        "es": "Elige el umbral antropométrico que corresponde a tu sexo biológico en la regla publicada: femenino o masculino.",
+        "en": "Choose the published anthropometric threshold corresponding to biological sex: female or male.",
+        "pt": "Escolha o limiar antropométrico publicado correspondente ao sexo biológico: feminino ou masculino."
+      },
+      "find_it": {
+        "es": "Dato que conoces de memoria. Se usa solo para el corte de cintura.",
+        "en": "Usually known from memory. Used only for the waist cut-off.",
+        "pt": "Geralmente conhecido de memória. Usado apenas no corte da cintura."
+      },
+      "x-title-i18n": {
+        "es": "Umbral de cintura",
+        "en": "Waist threshold",
+        "pt": "Faixa de cintura"
+      }
+    },
+    "body_measurements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "height_cm",
+        "weight_kg",
+        "waist_cm"
+      ],
+      "properties": {
+        "height_cm": {
+          "type": "number",
+          "minimum": 120,
+          "maximum": 220,
+          "default": 170,
+          "unit": "cm",
+          "x-imperial": {
+            "accepted": "ft+in",
+            "convert": "cm = total_inches * 2.54"
+          }
+        },
+        "weight_kg": {
+          "type": "number",
+          "minimum": 35,
+          "maximum": 250,
+          "default": 75,
+          "unit": "kg",
+          "x-imperial": {
+            "accepted": "lb",
+            "convert": "kg = lb * 0.45359237"
+          }
+        },
+        "waist_cm": {
+          "type": "number",
+          "minimum": 50,
+          "maximum": 180,
+          "default": 90,
+          "unit": "cm",
+          "x-imperial": {
+            "accepted": "in",
+            "convert": "cm = in * 2.54"
+          }
+        }
+      },
+      "title": "Medidas corporales",
+      "help": {
+        "es": "Altura, peso y cintura. La app calcula BMI internamente.",
+        "en": "Height, weight, and waist. BMI is computed internally.",
+        "pt": "Altura, peso e cintura. O IMC é calculado internamente."
+      },
+      "find_it": {
+        "es": "Báscula y cinta métrica; cintura medida de forma consistente, idealmente a mitad entre la última costilla y la cresta ilíaca.",
+        "en": "Scale and tape measure; measure waist consistently, ideally midway between the last rib and iliac crest.",
+        "pt": "Balança e fita métrica; meça a cintura de forma consistente, idealmente no meio entre a última costela e a crista ilíaca."
+      },
+      "x-title-i18n": {
+        "es": "Medidas corporales",
+        "en": "Body measurements",
+        "pt": "Medidas corporais"
+      }
+    },
+    "physical_activity_30m_daily": {
+      "type": "boolean",
+      "default": false,
+      "title": "Actividad física diaria",
+      "help": {
+        "es": "¿Realizas al menos 30 minutos de actividad física al día?",
+        "en": "Do you do at least 30 minutes of physical activity per day?",
+        "pt": "Você faz pelo menos 30 minutos de atividade física por dia?"
+      },
+      "find_it": {
+        "es": "Memoria, reloj o app de actividad.",
+        "en": "Memory, watch, or activity app.",
+        "pt": "Memória, relógio ou app de atividade."
+      },
+      "x-title-i18n": {
+        "es": "Actividad física diaria",
+        "en": "Daily physical activity",
+        "pt": "Atividade física diária"
+      }
+    },
+    "fruit_veg_daily": {
+      "type": "boolean",
+      "default": false,
+      "title": "Frutas/verduras a diario",
+      "help": {
+        "es": "¿Consumes frutas o verduras todos los días?",
+        "en": "Do you eat fruit or vegetables every day?",
+        "pt": "Você come frutas ou verduras todos os dias?"
+      },
+      "find_it": {
+        "es": "Tu rutina alimentaria habitual.",
+        "en": "Your usual eating routine.",
+        "pt": "Sua rotina alimentar habitual."
+      },
+      "x-title-i18n": {
+        "es": "Frutas/verduras a diario",
+        "en": "Daily fruit/vegetables",
+        "pt": "Frutas/verduras diariamente"
+      }
+    },
+    "antihypertensive_medication": {
+      "type": "boolean",
+      "default": false,
+      "title": "Medicación para hipertensión",
+      "help": {
+        "es": "¿Tomas regularmente medicación para presión arterial alta?",
+        "en": "Do you regularly take medication for high blood pressure?",
+        "pt": "Você usa regularmente medicamento para pressão alta?"
+      },
+      "find_it": {
+        "es": "Receta, envase del medicamento o app de salud.",
+        "en": "Prescription, medicine package, or health app.",
+        "pt": "Receita, embalagem do medicamento ou app de saúde."
+      },
+      "x-title-i18n": {
+        "es": "Medicación para hipertensión",
+        "en": "Blood pressure medication",
+        "pt": "Medicamento para pressão alta"
+      }
+    },
+    "history_high_glucose": {
+      "type": "boolean",
+      "default": false,
+      "title": "Glucosa alta previa",
+      "help": {
+        "es": "¿Alguna vez te dijeron que tu glucosa estaba alta en un examen, enfermedad o embarazo?",
+        "en": "Have you ever been told your blood glucose was high during a test, illness, or pregnancy?",
+        "pt": "Alguma vez disseram que sua glicose estava alta em exame, doença ou gravidez?"
+      },
+      "find_it": {
+        "es": "Resultados de laboratorio, historia clínica o recuerdo de indicación médica.",
+        "en": "Lab results, medical record, or previous clinician feedback.",
+        "pt": "Resultados de laboratório, prontuário ou orientação médica anterior."
+      },
+      "x-title-i18n": {
+        "es": "Glucosa alta previa",
+        "en": "Previous high blood glucose",
+        "pt": "Glicose alta anterior"
+      }
+    },
+    "family_history": {
+      "type": "string",
+      "enum": [
+        "none",
+        "second_degree",
+        "first_degree"
+      ],
+      "default": "none",
+      "title": "Antecedentes familiares",
+      "help": {
+        "es": "Primer grado: padre/madre, hermano/a o hijo/a. Segundo grado: abuelo/a, tío/a o primo/a.",
+        "en": "First degree: parent, sibling, or child. Second degree: grandparent, aunt/uncle, or cousin.",
+        "pt": "Primeiro grau: pai/mãe, irmão/irmã ou filho/a. Segundo grau: avô/avó, tio/tia ou primo/a."
+      },
+      "find_it": {
+        "es": "Conocimiento familiar; no necesitas un documento.",
+        "en": "Family knowledge; no document is required.",
+        "pt": "Conhecimento familiar; não precisa de documento."
+      },
+      "x-title-i18n": {
+        "es": "Antecedentes familiares",
+        "en": "Family history",
+        "pt": "Histórico familiar"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "body_measurements": {
+            "properties": {
+              "height_cm": {
+                "type": "number"
+              },
+              "weight_kg": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "x-cross-validation": "Calcular BMI. Si BMI <14 o >60, mostrar advertencia y pedir revisar unidades; no modificar el valor silenciosamente."
+      }
+    }
+  ],
+  "x-runtime-context": {
+    "country_code": {
+      "description": "No visible al usuario; derivado de mercado/locale/configuración de despliegue. Puede ser PE, MX, BR, CO, ES o DEFAULT_LATAM.",
+      "default": "DEFAULT_LATAM"
+    }
+  },
+  "x-unit-policy": {
+    "canonical": "metric",
+    "imperial_input": "Permitido en UI; convertir a métrico antes de llamar calculate().",
+    "rounding": "Conservar precisión suficiente; engine redondea BMI para display a 2 decimales y a 6 decimales para comparar umbrales."
+  }
+}

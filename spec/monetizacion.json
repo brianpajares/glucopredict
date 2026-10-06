@@ -1,0 +1,176 @@
+{
+  "version": "2.0",
+  "date": "2026-10-02",
+  "phase_1_validation": {
+    "offer": "Vista previa gratuita + formulario 'Recibe tu informe completo'.",
+    "fields": [
+      "email",
+      "consent_report_delivery",
+      "consent_owner_copy_optional"
+    ],
+    "privacy_rule": "Por defecto, el dueño recibe analytics desidentificados. Cualquier copia con inputs/resultados identificables requiere consentimiento explícito y base legal.",
+    "owner_copy": "Si hay consentimiento explícito: email con inputs, resultados y PDF; si no, solo evento agregado/desidentificado.",
+    "traction_metrics": [
+      {
+        "metric": "Visita -> inicio",
+        "threshold": ">=40%"
+      },
+      {
+        "metric": "Inicio -> vista previa",
+        "threshold": ">=70%"
+      },
+      {
+        "metric": "Vista previa -> solicitud de informe por email",
+        "threshold": ">=30%"
+      },
+      {
+        "metric": "Score en umbral -> clic CTA prueba",
+        "threshold": ">=10%"
+      }
+    ],
+    "activate_payment_when": [
+      ">=30% de usuarios de vista previa solicitan el informe por email en una muestra suficiente definida por analytics/experimento.",
+      "La paridad del algoritmo es 100% en vectores canónicos y QA no encuentra errores de banda.",
+      "Copy médico/legal y consentimiento están aprobados.",
+      "Existe un checkout compatible con salud/privacidad y costes que permiten >=85% de margen bruto objetivo antes de CAC."
+    ]
+  },
+  "phase_2_payment": {
+    "pricing_hypotheses": [
+      {
+        "country": "US",
+        "price": 9.0,
+        "currency": "USD",
+        "display": "USD 9",
+        "status": "preliminar",
+        "source": "brief etapa 1"
+      },
+      {
+        "country": "MX",
+        "price": 99.0,
+        "currency": "MXN",
+        "display": "MXN 99",
+        "status": "preliminar",
+        "source": "brief etapa 1 + PPP como validación pendiente"
+      },
+      {
+        "country": "BR",
+        "price": 29.9,
+        "currency": "BRL",
+        "display": "BRL 29.90",
+        "status": "preliminar",
+        "source": "brief etapa 1 + PPP como validación pendiente"
+      },
+      {
+        "country": "PE",
+        "price": 19.9,
+        "currency": "PEN",
+        "display": "PEN 19.90",
+        "status": "preliminar",
+        "source": "brief etapa 1 + PPP como validación pendiente"
+      },
+      {
+        "country": "CO",
+        "price": 24900,
+        "currency": "COP",
+        "display": "COP 24,900",
+        "status": "preliminar",
+        "source": "brief etapa 1 + PPP como validación pendiente"
+      },
+      {
+        "country": "ES",
+        "price": 7.99,
+        "currency": "EUR",
+        "display": "EUR 7.99",
+        "status": "preliminar",
+        "source": "brief etapa 1 + PPP como validación pendiente"
+      }
+    ],
+    "ppp_source": "M12/M16",
+    "bundles": [
+      {
+        "name": "Family 3",
+        "rule": "3 evaluaciones a 2.2x–2.5x el precio unitario",
+        "status": "hipotesis_A_B",
+        "note": "Rango de test, no precio publicado; validar disposición a pagar."
+      }
+    ],
+    "upsells": [
+      {
+        "name": "Reevaluación 12 semanas",
+        "type": "one_time_or_bundle",
+        "status": "hipotesis"
+      },
+      {
+        "name": "Laboratorio",
+        "type": "affiliate_or_lead",
+        "status": "legal_and_partner_validation_required",
+        "note": "No activar hasta revisar regulación, consentimiento y conflicto de interés."
+      },
+      {
+        "name": "Subscription",
+        "type": "recurring",
+        "status": "conditional",
+        "activation": "solo si seguimiento muestra recurrencia y retención"
+      }
+    ],
+    "pricing_note": "Todos los precios al consumidor son hipótesis A/B. Los factores PPP pueden estar verificados sin convertir el precio propuesto en 'verificado'."
+  },
+  "cost_model": {
+    "core_model_fee_per_report_usd": 0,
+    "core_model_fee_explanation": "El engine es código local determinista y no llama APIs pagadas.",
+    "email_reference": {
+      "provider": "Resend",
+      "source": "M14",
+      "published_plan": "Pro USD20/50,000 emails; overage USD0.90/1,000",
+      "derived_cost_if_fully_utilized_usd_per_email": 0.0004,
+      "example_two_emails_usd": 0.0008
+    },
+    "function_reference": {
+      "provider": "Vercel",
+      "source": "M15",
+      "published_invocation_price_usd": 6e-07,
+      "example_assumption": "6 invocations por informe",
+      "derived_six_invocations_usd": 3.6e-06
+    },
+    "payment_reference": {
+      "provider": "Paddle",
+      "source": "M13",
+      "published_fee": "5% + USD0.50 por checkout; la página indica contactar para productos <USD10",
+      "margin_formula": "gross_margin_before_fixed_infra = (price - (0.05*price + 0.50) - variable_email - variable_function) / price",
+      "derived_usd9_example": {
+        "price_usd": 9.0,
+        "payment_fee_usd": 0.95,
+        "email_2_usd": 0.0008,
+        "functions_6_usd": 3.6e-06,
+        "total_variable_cost_reference_usd": 0.9508036,
+        "gross_margin_before_fixed_infra_pct": 89.43551555555555
+      },
+      "break_even_for_85pct_margin_usd_before_other_variable_costs": 5.0,
+      "caveat": "Paddle señala pricing especial/consulta para productos <USD10; usar solo como referencia conservadora hasta cotización real."
+    },
+    "fixed_infrastructure": "No asignado por informe porque depende de volumen; Vercel Pro publica USD20/mes con crédito de uso incluido. Debe amortizarse en unit economics cuando haya volumen real.",
+    "not_included": [
+      "CAC",
+      "impuestos no absorbidos por Merchant of Record",
+      "refunds",
+      "soporte humano",
+      "coste de partnerships/labs"
+    ]
+  },
+  "margin_target": {
+    "target_gross_margin_before_cac": ">=85%",
+    "source": "brief etapa 1",
+    "rule": "No activar precio/checkout de mercado si el fee efectivo + coste variable supera 15% del precio."
+  },
+  "affiliates": {
+    "status": "off_by_default",
+    "conditions": [
+      "consentimiento específico",
+      "transparencia de remuneración",
+      "revisión regulatoria local",
+      "no condicionar consejo clínico al pago"
+    ]
+  },
+  "qa_reviewed_at": "2026-10-03"
+}

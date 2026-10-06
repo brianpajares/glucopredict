@@ -1,0 +1,1613 @@
+{
+  "version": "2.0",
+  "generated_by": "qa_engine.calculate (independent stage-3 verification)",
+  "base_file": "drive/base/base_glucopredict.xlsx",
+  "count": 29,
+  "note": "Expected válidos recalculados con qa_engine independiente desde model_spec.json + Excel. Los 19 canónicos iniciales coincidieron antes de QA; se corrigió únicamente el escenario BMI en fronteras 25/30. Se añadieron bordes FINDRISC/LA-FINDRISC, fallback país, conversión imperial canónica y casos de error estricto.",
+  "vectors": [
+    {
+      "id": "PE_typical_high",
+      "inputs": {
+        "country_code": "PE",
+        "age": 50,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 80,
+          "waist_cm": 95
+        },
+        "physical_activity_30m_daily": false,
+        "fruit_veg_daily": false,
+        "antihypertensive_medication": true,
+        "history_high_glucose": false,
+        "family_history": "first_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 31.25,
+        "score": 19,
+        "risk_band": "alto",
+        "reference_10y_pct": 33.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": true,
+        "components": {
+          "age": 2,
+          "bmi": 3,
+          "waist": 4,
+          "physical_activity": 2,
+          "fruit_veg": 1,
+          "antihypertensive": 2,
+          "history_high_glucose": 0,
+          "family_history": 5
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 10,
+          "removable_points": 9,
+          "next_bmi_threshold": 29.99,
+          "approx_weight_kg_at_next_bmi_threshold": 76.8,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "MX_typical_low",
+      "inputs": {
+        "country_code": "MX",
+        "age": 38,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 72,
+          "waist_cm": 88
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "MX",
+        "bmi": 23.51,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "BR_typical_moderate",
+      "inputs": {
+        "country_code": "BR",
+        "age": 58,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 162,
+          "weight_kg": 73,
+          "waist_cm": 92
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": false,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "second_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "BR",
+        "bmi": 27.82,
+        "score": 12,
+        "risk_band": "moderado",
+        "reference_10y_pct": 17.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": true,
+        "components": {
+          "age": 3,
+          "bmi": 1,
+          "waist": 4,
+          "physical_activity": 0,
+          "fruit_veg": 1,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 3
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 6,
+          "removable_points": 6,
+          "next_bmi_threshold": 24.99,
+          "approx_weight_kg_at_next_bmi_threshold": 65.6,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "CO_typical_high",
+      "inputs": {
+        "country_code": "CO",
+        "age": 62,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 170,
+          "weight_kg": 92,
+          "waist_cm": 105
+        },
+        "physical_activity_30m_daily": false,
+        "fruit_veg_daily": false,
+        "antihypertensive_medication": true,
+        "history_high_glucose": true,
+        "family_history": "first_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "CO",
+        "bmi": 31.83,
+        "score": 25,
+        "risk_band": "muy_alto",
+        "reference_10y_pct": 50.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": true,
+        "components": {
+          "age": 3,
+          "bmi": 3,
+          "waist": 4,
+          "physical_activity": 2,
+          "fruit_veg": 1,
+          "antihypertensive": 2,
+          "history_high_glucose": 5,
+          "family_history": 5
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 16,
+          "removable_points": 9,
+          "next_bmi_threshold": 29.99,
+          "approx_weight_kg_at_next_bmi_threshold": 86.7,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "ES_original_waist_mid",
+      "inputs": {
+        "country_code": "ES",
+        "age": 52,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 165,
+          "weight_kg": 68,
+          "waist_cm": 84
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "FINDRISC",
+        "country_code": "ES",
+        "bmi": 24.98,
+        "score": 5,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 2,
+          "bmi": 0,
+          "waist": 3,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 2,
+          "removable_points": 3,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "min_score",
+      "inputs": {
+        "country_code": "PE",
+        "age": 18,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170,
+          "weight_kg": 55,
+          "waist_cm": 65
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 19.03,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "max_score",
+      "inputs": {
+        "country_code": "PE",
+        "age": 80,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 120,
+          "waist_cm": 150
+        },
+        "physical_activity_30m_daily": false,
+        "fruit_veg_daily": false,
+        "antihypertensive_medication": true,
+        "history_high_glucose": true,
+        "family_history": "first_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 46.87,
+        "score": 26,
+        "risk_band": "muy_alto",
+        "reference_10y_pct": 50.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": true,
+        "components": {
+          "age": 4,
+          "bmi": 3,
+          "waist": 4,
+          "physical_activity": 2,
+          "fruit_veg": 1,
+          "antihypertensive": 2,
+          "history_high_glucose": 5,
+          "family_history": 5
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 17,
+          "removable_points": 9,
+          "next_bmi_threshold": 29.99,
+          "approx_weight_kg_at_next_bmi_threshold": 76.8,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "age_44_edge",
+      "inputs": {
+        "country_code": "PE",
+        "age": 44,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 75,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 24.49,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "age_45_edge",
+      "inputs": {
+        "country_code": "PE",
+        "age": 45,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 75,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 24.49,
+        "score": 2,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 2,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 2,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "age_55_edge",
+      "inputs": {
+        "country_code": "PE",
+        "age": 55,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 75,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 24.49,
+        "score": 3,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 3,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 3,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "age_65_edge",
+      "inputs": {
+        "country_code": "PE",
+        "age": 65,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 75,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 24.49,
+        "score": 4,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 4,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 4,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "bmi_just_below_25",
+      "inputs": {
+        "country_code": "PE",
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 63.97,
+          "waist_cm": 80
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 24.99,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "bmi_at_25",
+      "inputs": {
+        "country_code": "PE",
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 64.0,
+          "waist_cm": 80
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 25.0,
+        "score": 1,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 1,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 1,
+          "next_bmi_threshold": 24.99,
+          "approx_weight_kg_at_next_bmi_threshold": 64.0,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "bmi_at_30",
+      "inputs": {
+        "country_code": "PE",
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 76.8,
+          "waist_cm": 80
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 30.0,
+        "score": 3,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 3,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 1,
+          "removable_points": 2,
+          "next_bmi_threshold": 29.99,
+          "approx_weight_kg_at_next_bmi_threshold": 76.8,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "la_male_waist_94",
+      "inputs": {
+        "country_code": "MX",
+        "age": 40,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 75,
+          "waist_cm": 94
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "MX",
+        "bmi": 24.49,
+        "score": 4,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 4,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 4,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "la_female_waist_90",
+      "inputs": {
+        "country_code": "BR",
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 165,
+          "weight_kg": 65,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "BR",
+        "bmi": 23.88,
+        "score": 4,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 4,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 4,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "pe_exact_followup_11",
+      "inputs": {
+        "country_code": "PE",
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 64,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": false,
+        "fruit_veg_daily": false,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "second_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 25.0,
+        "score": 11,
+        "risk_band": "ligeramente_elevado",
+        "reference_10y_pct": 4.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": true,
+        "components": {
+          "age": 0,
+          "bmi": 1,
+          "waist": 4,
+          "physical_activity": 2,
+          "fruit_veg": 1,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 3
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 3,
+          "removable_points": 8,
+          "next_bmi_threshold": 24.99,
+          "approx_weight_kg_at_next_bmi_threshold": 64.0,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "family_first_degree_edge",
+      "inputs": {
+        "country_code": "CO",
+        "age": 50,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 180,
+          "weight_kg": 85,
+          "waist_cm": 93
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "first_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "CO",
+        "bmi": 26.23,
+        "score": 8,
+        "risk_band": "ligeramente_elevado",
+        "reference_10y_pct": 4.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 2,
+          "bmi": 1,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 5
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 7,
+          "removable_points": 1,
+          "next_bmi_threshold": 24.99,
+          "approx_weight_kg_at_next_bmi_threshold": 81.0,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "default_latam_context_omitted",
+      "inputs": {
+        "age": 45,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 160,
+          "weight_kg": 64,
+          "waist_cm": 90
+        },
+        "physical_activity_30m_daily": false,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "second_degree"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "DEFAULT_LATAM",
+        "bmi": 25.0,
+        "score": 12,
+        "risk_band": "moderado",
+        "reference_10y_pct": 17.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": true,
+        "components": {
+          "age": 2,
+          "bmi": 1,
+          "waist": 4,
+          "physical_activity": 2,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 3
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 5,
+          "removable_points": 7,
+          "next_bmi_threshold": 24.99,
+          "approx_weight_kg_at_next_bmi_threshold": 64.0,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "ES_female_waist_80",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 165,
+          "weight_kg": 60,
+          "waist_cm": 80
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "ES"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "FINDRISC",
+        "country_code": "ES",
+        "bmi": 22.04,
+        "score": 3,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 3,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 3,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "ES_female_waist_88",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 165,
+          "weight_kg": 60,
+          "waist_cm": 88
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "ES"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "FINDRISC",
+        "country_code": "ES",
+        "bmi": 22.04,
+        "score": 4,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 4,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 4,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "ES_male_waist_94",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 70,
+          "waist_cm": 94
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "ES"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "FINDRISC",
+        "country_code": "ES",
+        "bmi": 22.86,
+        "score": 3,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 3,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 3,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "ES_male_waist_102",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 70,
+          "waist_cm": 102
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "ES"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "FINDRISC",
+        "country_code": "ES",
+        "bmi": 22.86,
+        "score": 4,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 4,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 4,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "LA_male_waist_below_94",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 175,
+          "weight_kg": 70,
+          "waist_cm": 93.99
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "MX"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "MX",
+        "bmi": 22.86,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "LA_female_waist_below_90",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 165,
+          "weight_kg": 60,
+          "waist_cm": 89.99
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "BR"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "BR",
+        "bmi": 22.04,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "age_min_18",
+      "inputs": {
+        "age": 18,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170,
+          "weight_kg": 60,
+          "waist_cm": 70
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 20.76,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "age_max_80_isolated",
+      "inputs": {
+        "age": 80,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170,
+          "weight_kg": 60,
+          "waist_cm": 70
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "PE",
+        "bmi": 20.76,
+        "score": 4,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 11,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 4,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 4,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "unknown_country_fallback",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170,
+          "weight_kg": 60,
+          "waist_cm": 70
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "ZZ"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "DEFAULT_LATAM",
+        "bmi": 20.76,
+        "score": 0,
+        "risk_band": "bajo",
+        "reference_10y_pct": 1.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 0,
+          "bmi": 0,
+          "waist": 0,
+          "physical_activity": 0,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 0
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 0,
+          "removable_points": 0,
+          "next_bmi_threshold": null,
+          "approx_weight_kg_at_next_bmi_threshold": null,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      }
+    },
+    {
+      "id": "imperial_conversion_canonical",
+      "inputs": {
+        "age": 48,
+        "waist_threshold_sex": "male",
+        "body_measurements": {
+          "height_cm": 172.72,
+          "weight_kg": 81.6466266,
+          "waist_cm": 91.44
+        },
+        "physical_activity_30m_daily": false,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "first_degree",
+        "country_code": "MX"
+      },
+      "expected": {
+        "model_version": "2.0",
+        "model_variant": "LA_FINDRISC",
+        "country_code": "MX",
+        "bmi": 27.37,
+        "score": 10,
+        "risk_band": "ligeramente_elevado",
+        "reference_10y_pct": 4.0,
+        "reference_scope": "historical_FINDRISC_population_reference_not_personal_probability",
+        "followup_threshold": 12,
+        "lab_followup_recommended": false,
+        "components": {
+          "age": 2,
+          "bmi": 1,
+          "waist": 0,
+          "physical_activity": 2,
+          "fruit_veg": 0,
+          "antihypertensive": 0,
+          "history_high_glucose": 0,
+          "family_history": 5
+        },
+        "modifiable_scenario": {
+          "best_case_score_under_score_rules": 7,
+          "removable_points": 3,
+          "next_bmi_threshold": 24.99,
+          "approx_weight_kg_at_next_bmi_threshold": 74.6,
+          "causal_claim": false
+        },
+        "disclaimer": "Herramienta de cribado/riesgo; no diagnostica diabetes ni prediabetes. La confirmación requiere prueba clínica y profesional de salud."
+      },
+      "qa_meta": {
+        "source_units": {
+          "height_in": 68,
+          "weight_lb": 180,
+          "waist_in": 36
+        },
+        "conversion": {
+          "height_cm": "in*2.54",
+          "weight_kg": "lb*0.45359237",
+          "waist_cm": "in*2.54"
+        },
+        "purpose": "Verificar equivalencia métrico/imperial antes de calculate()."
+      }
+    }
+  ],
+  "error_vectors": [
+    {
+      "id": "invalid_age_fraction",
+      "inputs": {
+        "age": 44.9,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": 65.0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "entero"
+      }
+    },
+    {
+      "id": "invalid_age_below_range",
+      "inputs": {
+        "age": 17,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": 65.0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "age"
+      }
+    },
+    {
+      "id": "invalid_height_zero",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 0,
+          "weight_kg": 65.0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "height_cm"
+      }
+    },
+    {
+      "id": "invalid_weight_zero",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": 0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "weight_kg"
+      }
+    },
+    {
+      "id": "invalid_waist_above_range",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": 65.0,
+          "waist_cm": 181
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "waist_cm"
+      }
+    },
+    {
+      "id": "invalid_boolean_string",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": 65.0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": "false",
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "physical_activity_30m_daily"
+      }
+    },
+    {
+      "id": "invalid_height_nan_string",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": "NaN",
+          "weight_kg": 65.0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "height_cm"
+      }
+    },
+    {
+      "id": "invalid_weight_infinity_string",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": "Infinity",
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "family_history": "none",
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "weight_kg"
+      }
+    },
+    {
+      "id": "missing_family_history",
+      "inputs": {
+        "age": 40,
+        "waist_threshold_sex": "female",
+        "body_measurements": {
+          "height_cm": 170.0,
+          "weight_kg": 65.0,
+          "waist_cm": 80.0
+        },
+        "physical_activity_30m_daily": true,
+        "fruit_veg_daily": true,
+        "antihypertensive_medication": false,
+        "history_high_glucose": false,
+        "country_code": "PE"
+      },
+      "expected_error": {
+        "type": "ValueError",
+        "contains": "family_history"
+      }
+    }
+  ],
+  "error_count": 9
+}

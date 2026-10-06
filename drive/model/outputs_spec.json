@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "model_version": "2.0",
+  "app": "GlucoPredict",
+  "free_preview": [
+    {
+      "id": "score",
+      "label_es": "Tu score",
+      "origin": "Suma exacta de 8 componentes del modelo",
+      "unit": "puntos",
+      "format": "integer 0–26",
+      "access": "GRATIS"
+    },
+    {
+      "id": "risk_band",
+      "label_es": "Banda de referencia",
+      "origin": "Tabla de bandas del score",
+      "unit": "categoría",
+      "format": "bajo / ligeramente elevado / moderado / alto / muy alto",
+      "access": "GRATIS"
+    },
+    {
+      "id": "score_chart",
+      "label_es": "Dónde cae tu score",
+      "origin": "score + bandas",
+      "unit": "puntos",
+      "format": "barra 0–26 con marcador",
+      "access": "GRATIS"
+    },
+    {
+      "id": "insight",
+      "label_es": "Tu factor con más puntos",
+      "origin": "máximo de components; desempate por orden estable",
+      "unit": "texto",
+      "format": "1 insight no diagnóstico",
+      "access": "GRATIS"
+    },
+    {
+      "id": "lab_cta",
+      "label_es": "¿Conviene confirmar con una prueba?",
+      "origin": "score >= followup_threshold por país",
+      "unit": "boolean",
+      "format": "CTA educativo",
+      "access": "GRATIS"
+    }
+  ],
+  "full_report": [
+    {
+      "id": "component_breakdown",
+      "origin": "components",
+      "format": "tabla/gráfico de 8 componentes",
+      "access": "INFORME_COMPLETO"
+    },
+    {
+      "id": "modifiable_scenarios",
+      "origin": "recalculo determinista del score bajo reglas",
+      "format": "escenarios con score y puntos removibles; causal_claim=false",
+      "access": "INFORME_COMPLETO"
+    },
+    {
+      "id": "country_context",
+      "origin": "perfil de país + evidencia",
+      "format": "umbral usado, estado verificado/preliminar y fuente",
+      "access": "INFORME_COMPLETO"
+    },
+    {
+      "id": "reference_comparison",
+      "origin": "bandas históricas FINDRISC",
+      "format": "referencia poblacional; nunca probabilidad personal",
+      "access": "INFORME_COMPLETO"
+    },
+    {
+      "id": "action_plan_12w",
+      "origin": "reglas de producto basadas en componentes modificables",
+      "format": "plan conductual educativo de 12 semanas",
+      "access": "INFORME_COMPLETO"
+    },
+    {
+      "id": "doctor_summary",
+      "origin": "inputs + score + disclaimers",
+      "format": "resumen para llevar a consulta, sin diagnóstico",
+      "access": "INFORME_COMPLETO"
+    },
+    {
+      "id": "methodology",
+      "origin": "model_card + fuentes",
+      "format": "método, límites, versión y fuentes",
+      "access": "INFORME_COMPLETO"
+    }
+  ],
+  "subscription": {
+    "enabled_condition": "Solo activar si cohortes de validación muestran recurrencia real.",
+    "features": [
+      {
+        "id": "tracking",
+        "format": "historial de mediciones y score"
+      },
+      {
+        "id": "alerts",
+        "format": "recordatorios opt-in, no alertas clínicas"
+      },
+      {
+        "id": "periodic_recalc",
+        "format": "recalculo periódico con nueva cintura/peso/hábitos"
+      },
+      {
+        "id": "trend_report",
+        "format": "comparación de score-regla en el tiempo; no inferencia causal"
+      }
+    ]
+  },
+  "not_free": [
+    {
+      "item": "Desglose completo de los 8 componentes",
+      "why_purchase": "Convierte un score abstracto en palancas concretas."
+    },
+    {
+      "item": "Escenarios modificables y score alternativo",
+      "why_purchase": "Muestra qué preguntas cambian el resultado sin prometer efecto causal."
+    },
+    {
+      "item": "Plan de 12 semanas + resumen para médico",
+      "why_purchase": "Entrega utilidad posterior al test y material accionable."
+    },
+    {
+      "item": "Seguimiento longitudinal",
+      "why_purchase": "Solo tiene valor si el usuario vuelve; reservado a suscripción validada."
+    }
+  ],
+  "safety": {
+    "always_visible": "No diagnostica diabetes/prediabetes; un análisis clínico confirma diagnóstico.",
+    "forbidden_copy": [
+      "Tu probabilidad real es X%",
+      "Reducir X puntos reduce tu riesgo clínico en Y%",
+      "No necesitas consultar a un profesional"
+    ],
+    "historical_reference_rule": "reference_10y_pct puede mostrarse solo con la etiqueta 'referencia histórica FINDRISC; no probabilidad personal' y preferentemente dentro del informe, no como cifra principal."
+  }
+}

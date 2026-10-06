@@ -1,0 +1,307 @@
+{
+  "app_slug": "glucopredict",
+  "app_name": "GlucoPredict",
+  "version": "4.0",
+  "stage_completed": 4,
+  "status": "READY_TO_BUILD",
+  "next_agent": "LLM_PROGRAMMER",
+  "created_at": "2026-10-02T17:27:00-05:00",
+  "files": [
+    ".env.example",
+    "00_START_HERE.md",
+    "AGENTS.md",
+    "BUILD_PROMPT.md",
+    "CLAUDE.md",
+    "DECISIONS.md",
+    "README_START_HERE.md",
+    "TASKS.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/DRIVE_SETUP.md",
+    "docs/LAUNCH_CHECKLIST.md",
+    "docs/PRD.docx",
+    "docs/PRD.md",
+    "docs/TRACTION_PLAN.md",
+    "docs/brief_estrategico.md",
+    "docs/decisions_log.md",
+    "docs/final_audit.md",
+    "docs/qa_report.md",
+    "drive/base/base_glucopredict.xlsx",
+    "drive/docs/model_card.md",
+    "drive/model/engine_reference.py",
+    "drive/model/inputs.schema.json",
+    "drive/model/model_params_v2.json",
+    "drive/model/model_spec.json",
+    "drive/model/outputs_spec.json",
+    "drive/model/test_vectors.json",
+    "drive/templates/report_template_structure.json",
+    "handoff.json",
+    "model/engine_reference.py",
+    "model/ingest/README.md",
+    "model/ingest/ingest.py",
+    "model/model_card.md",
+    "model/qa_engine.py",
+    "source_stage3/APP-glucopredict/00_START_HERE.md",
+    "source_stage3/APP-glucopredict/01_estrategia/brief.json",
+    "source_stage3/APP-glucopredict/01_estrategia/brief_estrategico.docx",
+    "source_stage3/APP-glucopredict/01_estrategia/brief_estrategico.md",
+    "source_stage3/APP-glucopredict/01_estrategia/fuentes_mercado.csv",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/base/base_glucopredict.xlsx",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/docs/model_card.md",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/model/engine_reference.py",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/model/inputs.schema.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/model/model_params_v2.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/model/model_spec.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/model/outputs_spec.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/model/test_vectors.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive/templates/report_template_structure.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/drive_manifest.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/engine_reference.py",
+    "source_stage3/APP-glucopredict/02_datos_modelo/estudio_modelos.md",
+    "source_stage3/APP-glucopredict/02_datos_modelo/fuentes_datos.csv",
+    "source_stage3/APP-glucopredict/02_datos_modelo/ingest/README.md",
+    "source_stage3/APP-glucopredict/02_datos_modelo/ingest/ingest.py",
+    "source_stage3/APP-glucopredict/02_datos_modelo/inputs.schema.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/model_card.md",
+    "source_stage3/APP-glucopredict/02_datos_modelo/model_spec.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/monetizacion.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/outputs_spec.json",
+    "source_stage3/APP-glucopredict/02_datos_modelo/test_vectors.json",
+    "source_stage3/APP-glucopredict/03_qa_ux/analytics_events.json",
+    "source_stage3/APP-glucopredict/03_qa_ux/components.md",
+    "source_stage3/APP-glucopredict/03_qa_ux/copy_i18n.json",
+    "source_stage3/APP-glucopredict/03_qa_ux/design_tokens.json",
+    "source_stage3/APP-glucopredict/03_qa_ux/prototype.html",
+    "source_stage3/APP-glucopredict/03_qa_ux/qa_checks.json",
+    "source_stage3/APP-glucopredict/03_qa_ux/qa_engine.py",
+    "source_stage3/APP-glucopredict/03_qa_ux/qa_report.md",
+    "source_stage3/APP-glucopredict/03_qa_ux/report_layout.md",
+    "source_stage3/APP-glucopredict/03_qa_ux/sitemap_flows.md",
+    "source_stage3/APP-glucopredict/03_qa_ux/ux_spec.md",
+    "source_stage3/APP-glucopredict/handoff.json",
+    "source_stage3/APP-glucopredict_v3_etapa3_original.zip",
+    "spec/analytics_events.json",
+    "spec/copy_i18n.json",
+    "spec/db_schema.sql",
+    "spec/design_tokens.json",
+    "spec/drive_manifest.json",
+    "spec/inputs.schema.json",
+    "spec/model_spec.json",
+    "spec/monetizacion.json",
+    "spec/openapi.yaml",
+    "spec/outputs_spec.json",
+    "spec/test_vectors.json",
+    "ux/components.md",
+    "ux/prototype.html",
+    "ux/report_layout.md",
+    "ux/sitemap_flows.md",
+    "ux/ux_spec.md"
+  ],
+  "decisions": [
+    "PIVOT aplicado: de 'glucose spike predictor' a 'risk-to-action screening' no invasivo.",
+    "Motor del MVP: cálculo determinista, no LLM.",
+    "Promesa central: saber si conviene confirmar con prueba y ver qué puntos del score son modificables.",
+    "Prioridad geográfica: México -> Brasil -> Perú; luego Colombia y España.",
+    "No usar CGM para screening/diagnóstico en MVP; ADA 2026 señala evidencia insuficiente para ese uso.",
+    "Separar explícitamente 'score scenario' de reducción causal de riesgo.",
+    "Diseñar referral a A1C/FPG como north star para score alto, no la venta del informe.",
+    "Localización desde v1 en español, inglés y portugués brasileño.",
+    "Modelo principal: LA-FINDRISC en PE/MX/BR/CO/DEFAULT_LATAM y FINDRISC original en ES; score 0–26 determinista.",
+    "Perú usa follow-up threshold >=11 basado en validación PLOS 2024 en 549 trabajadores hospitalarios; no se generaliza como calibración nacional.",
+    "MX/BR/CO/ES usan threshold >=12 solo como fallback preliminar hasta validación local; la UI debe mostrar estado/fuente.",
+    "Los porcentajes históricos 1/4/17/33/50 se mantienen solo como referencia poblacional histórica y nunca como probabilidad personalizada.",
+    "Backup seleccionado: CDC/ADA Prediabetes Risk Test porque CDC Stacks lo marca Public Domain; no se mezcla silenciosamente con el outcome del principal.",
+    "AUSDRISK descartado para reproducción directa: el sitio oficial indica copyright del Commonwealth y pide contacto para reproducir.",
+    "January AI descartado como core: API cerrada, outcome distinto y términos que prohíben uso para decisión clínica/diagnóstico.",
+    "country_code es contexto de runtime y no uno de los 8 inputs visibles; si falta, engine usa DEFAULT_LATAM.",
+    "Corregido borde numérico de BMI: se redondea a 6 decimales antes de comparar cortes 25/30 para evitar errores de punto flotante.",
+    "No se entrena ML en v2: no hay un dataset multi-país homogéneo, licenciado y alineado al outcome que justifique reemplazar el score auditable.",
+    "Monetización usa costes publicados como referencias; no se inventa un costo local de checkout cuando depende del proveedor.",
+    "Etapa 3 corrige el escenario BMI para usar el mismo BMI redondeado a 6 decimales que el scoring; el score base no cambia.",
+    "El contrato de runtime se hace estricto: edad entera real, booleanos reales y medidas numéricas finitas; no se admiten coerciones silenciosas.",
+    "country_code desconocido se normaliza a DEFAULT_LATAM también en la salida.",
+    "El resultado gratuito siempre incluye score, banda histórica, estado del umbral y CTA de seguridad; el gate/pago monetiza profundidad, no seguridad clínica.",
+    "UX móvil: 10 pasos, una pregunta por pantalla, progreso real y valor central antes de 90 segundos.",
+    "Los porcentajes históricos no se presentan como probabilidad personal; escenarios son matemáticos y causal_claim=false.",
+    "Precios consumidor siguen preliminares aunque PPP esté verificado; requieren test A/B.",
+    "M03/M09 quedan como licencias corregidas y M07 como no_verificado para reutilización comercial.",
+    "FINDRISC requiere gate legal pre-lanzamiento para marca/instrumento; fallback CDC Public Domain permanece documentado.",
+    "Analytics no recibe respuestas clínicas; no persistir inputs de salud en localStorage por defecto.",
+    "Stage 4 fija MONETIZATION_MODE=validation como default y Stripe detrás de feature flag.",
+    "Stage 4 conserva el preview gratuito exactamente conforme a outputs_spec.json.",
+    "Stage 4 condiciona la copia identificable al OWNER_EMAIL a consent_owner_copy; sin ese consentimiento se envía notificación mínima y se usa /admin.",
+    "Stage 4 usa Supabase con RLS deny-by-default y acceso a datos sensibles solo vía Route Handlers con service role.",
+    "Stage 4 cifra payloads clínicos persistidos a nivel de aplicación mediante HEALTH_DATA_ENCRYPTION_KEY.",
+    "Stage 4 fija gate de cobro en preview→email >=30% y >=50 solicitudes en 14 días, además de gates legal/QA/margen.",
+    "Stage 4 no asigna una tarifa Stripe fija en el PRD; el coste real se mide en test/producción para proteger el margen objetivo."
+  ],
+  "assumptions": [
+    "Se conserva el nombre GlucoPredict como marca de trabajo; glucopredict.app es solo un dominio plausible y no se verificó disponibilidad ni trademark.",
+    "El MVP deja de prometer predicción de picos glucémicos sin sensor. Ese feature pasa a v2 solo si existe validación específica.",
+    "La unidad de valor del MVP es score/banda FINDRISC y un simulador de score; los porcentajes 1/4/17/33/50% se etiquetan como referencia histórica del modelo original.",
+    "El umbral demo para CTA de prueba será score >=12, pero Agente 2 debe confirmar/cambiarlo por país y caso de uso.",
+    "Las cifras IGT e IFG no se suman para estimar personas únicas porque hay solapamiento.",
+    "Volúmenes de keywords de S25 son proxies preliminares; deben verificarse en Google Ads/Semrush/Ahrefs antes de invertir en SEO.",
+    "Precios B2C/B2B son hipótesis de validación, no precios de mercado establecidos.",
+    "La copia al dueño en Fase 1 no debe contener datos de salud identificables sin consentimiento explícito; recomendado: copia desidentificada/analytics.",
+    "El claim original '~50% reversible si se detecta temprano' se retira: la evidencia respalda prevención/retraso en alto riesgo y remisión en una proporción de pacientes bajo programas intensivos seleccionados, no reversibilidad general.",
+    "El score es herramienta de cribado/risgo y no diagnóstico; la confirmación requiere prueba clínica.",
+    "La validación peruana 2024 es transversal y en trabajadores hospitalarios, por lo que su AUROC/umbral no se trata como calibración nacional.",
+    "El simulador de puntos removibles recalcula reglas del score; causal_claim=false.",
+    "Los inputs imperiales se convierten a métrico antes de calculate(); la base canónica usa cm/kg.",
+    "No hay costo de licencia/API por consulta en el engine principal; infraestructura, pago, soporte y CAC se modelan por separado.",
+    "El prototipo usa perfil PE y cálculo determinista embebido solo para demostración; producción debe consumir el motor verificado, no duplicar reglas en UI.",
+    "El estado 'verificado' del threshold PE describe evidencia en 549 trabajadores hospitalarios y no una calibración nacional.",
+    "Un país sin perfil soportado usa DEFAULT_LATAM y debe mostrar estado preliminar.",
+    "WCAG 2.2 AA y contrastes documentados son requisitos de implementación, no certificación automática del producto final.",
+    "El LLM programador implementará sin preguntas intermedias usando la precedencia documental definida.",
+    "Los secretos reales se configuran fuera del repositorio.",
+    "El modo validation se despliega antes de Stripe salvo decisión explícita posterior respaldada por KPIs."
+  ],
+  "open_issues": [
+    "Gate legal pre-lanzamiento: confirmar uso comercial de nombre/marca/instrumento FINDRISC/LA-FINDRISC; no reproducir arte/texto protegido sin permiso.",
+    "Validar thresholds MX/BR/CO/ES con evidencia local antes de etiquetarlos como verificados.",
+    "Validar precios por mercado con experimentos A/B y checkout real; PPP no equivale a willingness-to-pay.",
+    "Definir privacidad, retención, consentimientos y regulación sanitaria por jurisdicción antes de producción.",
+    "Si se integra January AI u otra API, revisar contrato/PHI/uso clínico; el score determinista debe permanecer independiente.",
+    "Antes de producción: cerrar revisión jurídica por jurisdicción sobre datos de salud y clasificación regulatoria del producto.",
+    "Antes de producción: confirmar derechos de uso comercial del instrumento/nombre FINDRISC/LA-FINDRISC.",
+    "Antes de activar Stripe: validar fee efectivo, impuestos/merchant setup y margen con proveedor real."
+  ],
+  "changelog": [
+    {
+      "version": "1.0",
+      "date": "2026-10-02",
+      "changes": "Etapa 1 creada. Pivot aplicado; no existía ZIP previo."
+    },
+    {
+      "version": "2.0",
+      "date": "2026-10-02",
+      "changes": "Etapa 2 completa: investigación de 7 candidatos, modelo principal/respaldo, base Excel auditable, engine Python, 19 vectores, schemas, outputs, monetización, model card, ingest y Drive manifest."
+    },
+    {
+      "version": "3.0",
+      "date": "2026-10-03",
+      "changes": "Etapa 3 QA+UX: reimplementación independiente, 29 vectores válidos + 9 inválidos, correcciones BMI/validación/licencias/pricing/claims, UX/UI ES-EN-PT y prototipo autocontenido."
+    },
+    {
+      "version": "4.0",
+      "date": "2026-10-03",
+      "changes": "Etapa 4: PRD completo, OpenAPI/SQL, paquete para LLM programador, modo validation, runbooks, trazabilidad y auditoría final."
+    }
+  ],
+  "updated_at": "2026-10-03T16:00:00-05:00",
+  "data_quality": {
+    "verified_rows": 39,
+    "total_rows": 47,
+    "verified_rows_pct": 82.98,
+    "denominator": "Filas de Parametros (30) + Tablas_Score (5) + Tablas_Paises (6) + Tablas_Precios (6). Fuentes, casos de prueba y filas vacías no cuentan.",
+    "target_met": true,
+    "note": "Los estados preliminares corresponden sobre todo a umbrales país y pricing; nunca se presentan como hechos verificados."
+  },
+  "model": {
+    "primary": "LA-FINDRISC/FINDRISC parametrizado por mercado",
+    "backup": "CDC/ADA Prediabetes Risk Test (Public Domain)",
+    "main_output": "score 0–26 + banda + CTA de confirmación; no probabilidad individual",
+    "reference_engine": "02_datos_modelo/engine_reference.py",
+    "base": "02_datos_modelo/drive/base/base_glucopredict.xlsx",
+    "test_vectors": 29,
+    "motor_python_parity": true,
+    "motor_example": {
+      "country_code": "PE",
+      "score": 19,
+      "risk_band": "alto",
+      "bmi": 31.25,
+      "lab_followup_recommended": true
+    },
+    "error_vectors": 9,
+    "qa_revision": "2.0.8"
+  },
+  "resolved_stage1_issues": [
+    {
+      "issue": "Agente 2: elegir FINDRISC vs LA-FINDRISC por país y fijar umbral de referral con evidencia local.",
+      "resolution": "Resuelto: variantes por mercado definidas; PE >=11 verificado, otros mercados >=12 preliminar."
+    },
+    {
+      "issue": "Agente 2: localizar datasets con outcome A1C/FPG/OGTT para recalibración y validación externa.",
+      "resolution": "Parcialmente resuelto como decisión: no entrenar/recalibrar en v2 sin dataset multi-país homogéneo y licenciado; validación local queda open issue por mercado."
+    }
+  ],
+  "readiness": "READY_TO_BUILD: paquete de construcción auditado. Gates legales/privacidad/IP siguen siendo pre-lanzamiento, no bloquean la construcción técnica.",
+  "findings_by_severity": {
+    "CRITICO": {
+      "count": 0,
+      "status": "none"
+    },
+    "MAYOR": {
+      "count": 5,
+      "status": "fixed",
+      "ids": [
+        "M-01",
+        "M-02",
+        "M-03",
+        "M-04",
+        "M-05"
+      ]
+    },
+    "MENOR": {
+      "count": 2,
+      "status": "fixed_or_mitigated",
+      "ids": [
+        "m-01",
+        "m-02"
+      ]
+    }
+  },
+  "qa": {
+    "verdict": "PASS_WITH_FIXES",
+    "independent_engine": "03_qa_ux/qa_engine.py",
+    "original_vectors": "19/19",
+    "final_valid_vectors": {
+      "qa_vs_expected": "29/29",
+      "reference_vs_expected": "29/29",
+      "qa_vs_reference": "29/29"
+    },
+    "invalid_vectors": {
+      "qa": "9/9",
+      "reference": "9/9"
+    },
+    "tolerance": {
+      "relative": 1e-06,
+      "absolute": 1e-09
+    },
+    "monotonicity": "PASS",
+    "excel_formula_errors": 0,
+    "excel_revision": "2.0.8",
+    "source_audit_date": "2026-10-03"
+  },
+  "ux": {
+    "positioning": "score de cribado auditable + siguiente acción; no diagnóstico ni probabilidad personal",
+    "languages": [
+      "es",
+      "en",
+      "pt"
+    ],
+    "primary_flow": "Landing > 10-step wizard > Procesando > Preview > Email gate/Pago > Éxito > Informe",
+    "top_conversion_decisions": [
+      "score/banda/CTA de seguridad antes del gate",
+      "una pregunta por pantalla móvil + progreso real",
+      "preview con profundidad bloqueada visible sin inventar resultados"
+    ],
+    "wcag_target": "2.2 AA",
+    "prototype": "03_qa_ux/prototype.html"
+  },
+  "stage4_validation": {
+    "stage3_gate": "PASS_WITH_FIXES accepted",
+    "reference_valid_vectors": "29/29",
+    "reference_invalid_vectors": "9/9",
+    "json_validation": "PASS",
+    "drive_manifest": "9/9 exists + SHA256 match",
+    "monetization_mode": "validation",
+    "build_target": "Vercel; Netlify alternative",
+    "final_audit": "PASS 15/15",
+    "prd_docx_visual_qa": "13/13 pages rendered and visually inspected",
+    "traceability": "32/32 US ↔ 32/32 FR ↔ 32/32 AT",
+    "outputs_coverage": "12/12 outputs_spec IDs referenced",
+    "package_integrity": "PASS source tree; ZIP integrity verified as release gate after packaging"
+  }
+}
