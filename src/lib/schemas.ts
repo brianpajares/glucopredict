@@ -33,6 +33,7 @@ export const PurchaseStartSchema = z.strictObject({
 export const CreateOrderSchema = z.strictObject({
   purchase_id: z.string().uuid(),
   unlock_token: z.string().min(20).max(4000),
+  accept_terms: z.boolean().optional(),
 });
 
 export const CaptureSchema = z.strictObject({

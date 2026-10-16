@@ -48,7 +48,8 @@ const T = {
     report_h: "Tu informe está listo",
     report_p1: "Gracias por tu compra. Adjuntamos tu informe completo en PDF. Guárdalo y llévalo a tu consulta.",
     report_p2: "Recuerda: es una herramienta educativa de cribado. Un score no es un diagnóstico; solo una prueba clínica interpretada por un profesional puede confirmar o descartar una condición.",
-    report_p3: "Puedes volver a descargar tu informe desde el enlace de desbloqueo que te enviamos antes.",
+    report_p3: "Puedes volver a descargar tu informe cuando quieras con el botón de abajo. Guarda este correo: es tu comprobante.",
+    report_dl: "Descargar mi informe (PDF)",
     free_subject: "Tu informe de GlucoPredict",
     free_p1: "Gracias por probar GlucoPredict. Adjuntamos tu informe completo en PDF.",
   },
@@ -64,7 +65,8 @@ const T = {
     report_h: "Your report is ready",
     report_p1: "Thank you for your purchase. Your full report is attached as a PDF. Keep it and bring it to your appointment.",
     report_p2: "Remember: this is an educational screening tool. A score is not a diagnosis; only a clinical test interpreted by a professional can confirm or rule out a condition.",
-    report_p3: "You can download your report again from the unlock link we sent earlier.",
+    report_p3: "You can download your report again whenever you like with the button below. Keep this email: it is your receipt.",
+    report_dl: "Download my report (PDF)",
     free_subject: "Your GlucoPredict report",
     free_p1: "Thank you for trying GlucoPredict. Your full report is attached as a PDF.",
   },
@@ -80,7 +82,8 @@ const T = {
     report_h: "Seu relatório está pronto",
     report_p1: "Obrigado pela sua compra. Anexamos seu relatório completo em PDF. Guarde-o e leve-o à sua consulta.",
     report_p2: "Lembre-se: é uma ferramenta educacional de triagem. Um score não é um diagnóstico; somente um exame clínico interpretado por um profissional pode confirmar ou descartar uma condição.",
-    report_p3: "Você pode baixar seu relatório novamente pelo link de desbloqueio que enviamos antes.",
+    report_p3: "Você pode baixar seu relatório novamente quando quiser com o botão abaixo. Guarde este email: é o seu comprovante.",
+    report_dl: "Baixar meu relatório (PDF)",
     free_subject: "Seu relatório do GlucoPredict",
     free_p1: "Obrigado por experimentar o GlucoPredict. Anexamos seu relatório completo em PDF.",
   },
@@ -98,15 +101,31 @@ export function previewEmail(locale: Locale, a: { unlockUrl: string; priceLabel:
   };
 }
 
-export function reportEmail(locale: Locale, kind: "paid" | "free"): Mail {
+export function reportEmail(locale: Locale, kind: "paid" | "free", opts: { downloadUrl?: string } = {}): Mail {
   const t = T[locale];
   const p1 = kind === "paid" ? t.report_p1 : t.free_p1;
-  const inner = `<h1 style="font-size:21px;line-height:1.3;margin:12px 0">${esc(t.report_h)}</h1><p>${esc(p1)}</p><p>${esc(t.report_p2)}</p>${kind === "paid" ? `<p style="color:#4B5563">${esc(t.report_p3)}</p>` : ""}`;
+  const dl = kind === "paid" && opts.downloadUrl ? button(opts.downloadUrl, t.report_dl) : "";
+  const inner = `<h1 style="font-size:21px;line-height:1.3;margin:12px 0">${esc(t.report_h)}</h1><p>${esc(p1)}</p><p>${esc(t.report_p2)}</p>${kind === "paid" ? `<p style="color:#4B5563">${esc(t.report_p3)}</p>${dl}` : ""}`;
   return {
     subject: kind === "paid" ? t.report_subject : t.free_subject,
     html: shell(locale, inner, DISCLAIMER[locale]),
-    text: `${t.report_h}\n\n${p1}\n\n${t.report_p2}\n\n${DISCLAIMER[locale]}`,
+    text: `${t.report_h}
+
+${p1}
+
+${t.report_p2}${dl && opts.downloadUrl ? `
+
+${t.report_dl}: ${opts.downloadUrl}` : ""}
+
+${DISCLAIMER[locale]}`,
   };
+}
+
+/** Aviso al dueño de eventos de PayPal sin compra conocida (modo sin base de datos). */
+export function ownerPaypalEventEmail(a: { type: string; eventId: string; resourceId: string }): Mail {
+  const lines = [`Evento de PayPal: ${a.type}`, `Recurso: ${a.resourceId || "-"}`, `Evento: ${a.eventId}`, "Revísalo en PayPal (Actividad). Si es un reembolso o una disputa, el enlace de descarga del informe deja de funcionar automáticamente."];
+  const inner = `<h1 style="font-size:19px;margin:12px 0">${esc(lines[0])}</h1>${lines.slice(1).map((l) => `<p style="margin:6px 0">${esc(l)}</p>`).join("")}`;
+  return { subject: `GlucoPredict | EVENTO PAYPAL ${a.type} | ${a.resourceId || a.eventId}`, html: shell("es", inner, "Aviso operativo de GlucoPredict."), text: lines.join(String.fromCharCode(10)) };
 }
 
 /** Correos al dueño: en español (idioma operativo). */

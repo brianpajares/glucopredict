@@ -10,8 +10,8 @@ Estado a 2026-10-16: `[x]` = verificado en esta entrega (mocks / navegador) · `
 - [x] Umbrales preliminares se muestran como preliminares (PE verificado con su limitación).
 - [x] ES/EN/PT sin claves faltantes (tipado estricto).
 - [ ] Correo real: dominio **Verified** en Resend y correo **Delivered** al usuario y al dueño (`docs/EMAIL_SETUP.md`).
-- [ ] Supabase: migración ejecutada (`tablas = 2`, `funciones = 3`) en un proyecto propio de GlucoPredict.
-- [ ] `/api/health` en producción: `email`, `database`, `report_links`, `paypal` y `payments.enabled` en `true`, `env: "sandbox"`.
+- [ ] Almacenamiento de compras: `PURCHASE_STORAGE=stateless` (sin costo) **o** Supabase con la migración ejecutada (`tablas = 2`, `funciones = 3`) en un proyecto propio.
+- [ ] `/api/health` en producción: `email`, `report_links`, `paypal` y `payments.enabled` en `true`, `payments.storage` = `stateless` o `supabase`, `env: "sandbox"`.
 - [ ] Compra completa en **PayPal Sandbox real**: vista previa → desbloqueo → pago → PDF completo → "VENTA CONFIRMADA | SANDBOX".
 - [ ] Webhooks con respuesta 200 en PayPal Developer; reembolso refleja `REFUNDED`.
 - [ ] Secretos solo en Vercel (ninguno en el repo); rotar cualquier secreto que se haya compartido por chat.

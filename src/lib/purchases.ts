@@ -1,7 +1,7 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import type { Locale } from "@/lib/i18n/config";
-import { supabaseConfig } from "@/lib/env";
+import { purchaseStorage, supabaseConfig } from "@/lib/env";
 
 export type PaymentStatus = "CREATED" | "AWAITING_PAYMENT" | "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED" | "DISPUTED";
 export type FulfillmentStatus = "NOT_STARTED" | "PDF_READY" | "EMAIL_PENDING" | "EMAIL_ACCEPTED" | "DELIVERED_CONFIRMED" | "DELIVERY_FAILED";
@@ -34,6 +34,10 @@ export type NewPurchase = Pick<Purchase, "report_id" | "email_hash" | "payload_c
 export type MarkPaidResult = "paid" | "already_paid" | "mismatch";
 
 export interface PurchaseRepo {
+  /** true => sin base de datos: el estado se reconstruye desde el token de desbloqueo y PayPal. */
+  readonly stateless?: boolean;
+  /** Solo modo stateless: registra una compra reconstruida para esta instancia. */
+  seed?(p: Purchase): void;
   create(p: NewPurchase): Promise<Purchase>;
   get(id: string): Promise<Purchase | null>;
   findByReport(reportId: string): Promise<Purchase | null>;
@@ -156,6 +160,62 @@ export class MemoryPurchaseRepo implements PurchaseRepo {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Sin base de datos: caché caliente por instancia (NO es fuente de verdad)
+// ---------------------------------------------------------------------------------------------
+/**
+ * Modo sin base de datos. Cada petición reconstruye la compra desde el token de desbloqueo (que ya lleva email,
+ * inputs e idioma cifrados) y consulta a PayPal. Esta clase solo da continuidad dentro de una misma petición/instancia.
+ * Idempotencia entre instancias: PayPal solo permite una captura por orden y Resend deduplica por Idempotency-Key.
+ */
+export class StatelessPurchaseRepo extends MemoryPurchaseRepo {
+  readonly stateless = true;
+
+  seed(p: Purchase): void {
+    if (this.rows.size > 500) this.prune();
+    if (!this.rows.has(p.id)) this.rows.set(p.id, { ...p });
+  }
+  clear(): void {
+    this.rows.clear();
+    this.events.clear();
+  }
+  private prune(): void {
+    const cutoff = Date.now() - 60 * 60_000;
+    for (const [id, r] of this.rows) if (Date.parse(r.created_at) < cutoff) this.rows.delete(id);
+  }
+  async create(p: NewPurchase): Promise<Purchase> {
+    const now = new Date().toISOString();
+    const row: Purchase = {
+      ...p,
+      id: p.report_id, // el id de compra es el id del informe: así custom_id de PayPal se valida sin base de datos
+      payment_status: "CREATED",
+      fulfillment_status: "NOT_STARTED",
+      paypal_order_id: null,
+      paypal_capture_id: null,
+      terms_accepted_at: null,
+      last_error: null,
+      fulfillment_claimed_at: null,
+      paid_at: null,
+      fulfilled_at: null,
+      created_at: now,
+      updated_at: now,
+    };
+    this.seed(row);
+    return { ...this.rows.get(row.id)! };
+  }
+  async findByReport(): Promise<Purchase | null> {
+    return null; // se reconstruye desde el token
+  }
+  async listUndelivered(): Promise<Purchase[]> {
+    return []; // sin cola: los reintentos los dispara el propio usuario al reabrir su enlace
+  }
+}
+
+let statelessSingleton: StatelessPurchaseRepo | null = null;
+export function resetStatelessCache(): void {
+  statelessSingleton?.clear();
+}
+
+// ---------------------------------------------------------------------------------------------
 // Supabase (REST con service_role, solo servidor)
 // ---------------------------------------------------------------------------------------------
 export class SupabasePurchaseRepo implements PurchaseRepo {
@@ -257,8 +317,10 @@ export function setPurchaseRepoForTests(repo: PurchaseRepo | null | undefined): 
 
 export function getPurchaseRepo(): PurchaseRepo | null {
   if (override !== undefined) return override;
+  const storage = purchaseStorage();
+  if (storage === "stateless") return (statelessSingleton ??= new StatelessPurchaseRepo());
   const cfg = supabaseConfig();
-  return cfg ? new SupabasePurchaseRepo(cfg.url, cfg.key) : null;
+  return storage === "supabase" && cfg ? new SupabasePurchaseRepo(cfg.url, cfg.key) : null;
 }
 
 export function publicStatus(p: Purchase): { payment: PaymentStatus; delivery: FulfillmentStatus } {

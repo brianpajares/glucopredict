@@ -1,4 +1,4 @@
-import { deploymentInfo, fromDomain, monetizationMode, paypalConfig, reportPrice, resendKeyState, supabaseConfig, tokenSecret, cronSecret } from "@/lib/env";
+import { deploymentInfo, fromDomain, monetizationMode, paypalConfig, purchaseStorage, reportPrice, resendKeyState, supabaseConfig, tokenSecret, cronSecret } from "@/lib/env";
 import { paymentsReady } from "@/lib/fulfillment";
 import { MODEL_VERSION, PARAMS } from "@/lib/engine/engine";
 import { json } from "@/lib/security";
@@ -28,6 +28,7 @@ export async function GET() {
     },
     payments: {
       mode: monetizationMode(),
+      storage: purchaseStorage(),
       enabled: pay.ready,
       env: pp.env,
       client_id: pp.clientId || null,

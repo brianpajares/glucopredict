@@ -112,6 +112,17 @@ export function supabaseConfig(): { url: string; key: string } | null {
   return { url, key };
 }
 
+export type PurchaseStorage = "supabase" | "stateless" | "none";
+
+/**
+ * Dónde viven las compras. `PURCHASE_STORAGE=stateless` => sin base de datos (PayPal es el libro contable;
+ * ver DECISIONS.md D-16). Si no, Supabase cuando está configurado; si no, "none" (pagos deshabilitados).
+ */
+export function purchaseStorage(): PurchaseStorage {
+  if (clean(process.env.PURCHASE_STORAGE).toLowerCase() === "stateless") return "stateless";
+  return supabaseConfig() ? "supabase" : "none";
+}
+
 /** Precio en servidor únicamente. Hipótesis preliminar de spec/monetizacion.json (US: USD 9). */
 export function reportPrice(): { value: string; currency: "USD"; label: string } {
   const raw = clean(process.env.REPORT_PRICE_USD);

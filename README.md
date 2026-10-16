@@ -8,12 +8,12 @@ GlucoPredict es una herramienta **educativa de cribado** basada en FINDRISC / LA
 2. **Informe completo de 10+ páginas (PDF)**: desglose de los 8 componentes, escenarios de la regla, contexto de país, pruebas de confirmación, plan educativo de 12 semanas, hoja de seguimiento, resumen y preguntas para la consulta, metodología y fuentes.
 3. **Dos modos** (`MONETIZATION_MODE`):
    - `validation` (por defecto, PRD §17): el informe completo se envía gratis por email.
-   - `paypal`: el usuario recibe una **vista previa borrosa** (el contenido bloqueado nunca se escribe en el PDF) y un enlace privado de desbloqueo; paga con PayPal/tarjeta y recibe el PDF completo por email. Solo se activa si PayPal + Supabase + Resend + `REPORT_TOKEN_SECRET` están configurados.
+   - `paypal`: el usuario recibe una **vista previa borrosa** (el contenido bloqueado nunca se escribe en el PDF) y un enlace privado de desbloqueo; paga con PayPal/tarjeta y recibe el PDF completo por email. Solo se activa si PayPal + Resend + `REPORT_TOKEN_SECRET` están configurados y hay dónde registrar compras: `PURCHASE_STORAGE=stateless` (sin base de datos, sin costo) o Supabase.
 4. **Diagnóstico**: `GET /api/health` (sin secretos) dice qué está configurado y qué falta.
 
 ## Stack
 
-Next.js (App Router) · TypeScript strict · pdf-lib · Resend (REST) · PayPal Checkout Orders v2 · Supabase (REST, service role solo servidor) · Vitest · Playwright · Vercel.
+Next.js (App Router) · TypeScript strict · pdf-lib · Resend (REST) · PayPal Checkout Orders v2 · Supabase opcional (REST, service role solo servidor) · Vitest · Playwright · Vercel.
 
 ## Desarrollo
 

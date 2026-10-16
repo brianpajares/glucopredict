@@ -1,7 +1,7 @@
 import "server-only";
 import type { Locale } from "@/lib/i18n/config";
 import type { EngineInputs } from "@/lib/engine/types";
-import { adminNoticeEmail, monetizationMode, paypalConfig, reportPrice, resendKeyState, retentionDays, tokenSecret } from "@/lib/env";
+import { adminNoticeEmail, appUrl, monetizationMode, paypalConfig, reportPrice, resendKeyState, retentionDays, tokenSecret } from "@/lib/env";
 import { reportEmail, ownerSaleEmail } from "@/lib/email/templates";
 import { sendEmail } from "@/lib/email/resend";
 import { getPurchaseRepo, type Purchase } from "@/lib/purchases";
@@ -31,7 +31,7 @@ export function paymentsReady(): { ready: boolean; missing: string[] } {
   const pp = paypalConfig();
   if (!pp.configured) missing.push("PAYPAL_CLIENT_ID/PAYPAL_CLIENT_SECRET");
   if (pp.liveBlocked) missing.push("PAYMENTS_LIVE_APPROVED=true (LIVE bloqueado)");
-  if (!getPurchaseRepo()) missing.push("SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY");
+  if (!getPurchaseRepo()) missing.push("PURCHASE_STORAGE=stateless (sin base de datos) o SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY");
   const key = resendKeyState();
   if (key !== "ok") missing.push(`RESEND_API_KEY (${key})`);
   if (!tokenSecret()) missing.push("REPORT_TOKEN_SECRET (>=32 caracteres)");
@@ -65,6 +65,7 @@ export async function fulfill(purchase: Purchase): Promise<FulfillResult> {
       subject: mail.subject,
       html: mail.html,
       text: mail.text,
+      idempotencyKey: `gp-sale-${purchase.id}-${delivery}`,
       attachments: withCopy && pdf ? [{ filename: `GlucoPredict-${purchase.id.slice(0, 8)}-COMPLETO.pdf`, content: pdf }] : undefined,
     });
   };
@@ -73,7 +74,12 @@ export async function fulfill(purchase: Purchase): Promise<FulfillResult> {
     if (!purchase.payload_ciphertext) throw new Error("payload_purged");
     const payload = openPayload(purchase.payload_ciphertext);
     const built = await buildReportPdf({ locale: payload.locale, inputs: payload.inputs, mode: "full" });
-    const mail = reportEmail(payload.locale, "paid");
+    // Enlace para volver a descargar (comprobante): token de desbloqueo + id de orden, verificados contra PayPal.
+    const unlockToken = seal("unlock", { rid: payload.rid, email: payload.email, locale: payload.locale, inputs: payload.inputs, oc: payload.oc }, retentionDays());
+    const downloadUrl = purchase.paypal_order_id
+      ? `${appUrl()}/api/purchase/download?t=${encodeURIComponent(unlockToken)}&o=${encodeURIComponent(purchase.paypal_order_id)}`
+      : undefined;
+    const mail = reportEmail(payload.locale, "paid", { downloadUrl });
     const sent = await sendEmail({
       to: payload.email,
       subject: mail.subject,

@@ -65,11 +65,49 @@ export function UnlockClient({ lang, m, token, priceLabel, maskedEmail, payments
   const purchaseId = useRef<string | null>(null);
   const buttons = useRef<PaypalButtons | null>(null);
   const doneRef = useRef<HTMLHeadingElement>(null);
+  const [orderId, setOrderId] = useState<string>("");
+  const storageKey = `gp-order:${token.slice(-24)}`;
+  const rememberOrder = useCallback(
+    (id: string) => {
+      setOrderId(id);
+      try {
+        window.localStorage.setItem(storageKey, id);
+      } catch {
+        /* conveniencia por navegador: puede no estar disponible */
+      }
+    },
+    [storageKey],
+  );
 
   const post = useCallback(async (url: string, body: unknown) => {
     const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
     return { ok: res.ok, status: res.status, data };
+  }, []);
+
+  // Sin base de datos PayPal es el libro contable: si este navegador recuerda una orden, se verifica su estado.
+  useEffect(() => {
+    if (state.payment === "COMPLETED") return;
+    let saved = "";
+    try {
+      saved = window.localStorage.getItem(storageKey) ?? "";
+    } catch {
+      saved = "";
+    }
+    if (!saved) return;
+    let cancelled = false;
+    fetch(`/api/purchase/status?t=${encodeURIComponent(token)}&o=${encodeURIComponent(saved)}`)
+      .then((r) => r.json())
+      .then((r: { payment?: Payment; delivery?: Delivery }) => {
+        if (cancelled || r.payment !== "COMPLETED") return;
+        setOrderId(saved);
+        setState({ payment: "COMPLETED", delivery: r.delivery ?? "NOT_STARTED" });
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Al aceptar los términos se crea la compra y se montan los botones de PayPal.
@@ -96,8 +134,9 @@ export function UnlockClient({ lang, m, token, priceLabel, maskedEmail, payments
           style: { layout: "vertical", shape: "rect", label: "pay", height: 48 },
           createOrder: async () => {
             setError(null);
-            const r = await post("/api/paypal/create-order", { purchase_id: purchaseId.current, unlock_token: token });
+            const r = await post("/api/paypal/create-order", { purchase_id: purchaseId.current, unlock_token: token, accept_terms: true });
             if (!r.ok) throw new Error(String(r.data.error ?? "order_failed"));
+            rememberOrder(String(r.data.order_id));
             return String(r.data.order_id);
           },
           onApprove: async (data) => {
@@ -125,7 +164,7 @@ export function UnlockClient({ lang, m, token, priceLabel, maskedEmail, payments
       buttons.current?.close().catch(() => undefined);
       buttons.current = null;
     };
-  }, [accepted, paymentsEnabled, token, lang, post, m.unlock.err_disabled, m.unlock.err_failed, state.payment]);
+  }, [accepted, paymentsEnabled, token, lang, post, rememberOrder, m.unlock.err_disabled, m.unlock.err_failed, state.payment]);
 
   // Pago pendiente: consulta el estado hasta que PayPal lo confirme.
   useEffect(() => {
@@ -134,11 +173,11 @@ export function UnlockClient({ lang, m, token, priceLabel, maskedEmail, payments
     const id = window.setInterval(async () => {
       n += 1;
       if (n > 50) return window.clearInterval(id);
-      const r = await fetch(`/api/purchase/status?t=${encodeURIComponent(token)}`).then((x) => x.json()).catch(() => null);
+      const r = await fetch(`/api/purchase/status?t=${encodeURIComponent(token)}&o=${encodeURIComponent(orderId)}`).then((x) => x.json()).catch(() => null);
       if (r && r.payment && r.payment !== "PENDING") setState({ payment: r.payment, delivery: r.delivery });
     }, 6000);
     return () => window.clearInterval(id);
-  }, [state.payment, token]);
+  }, [state.payment, token, orderId]);
 
   useEffect(() => {
     if (state.payment === "COMPLETED" || state.payment === "PENDING") doneRef.current?.focus();
@@ -157,7 +196,7 @@ export function UnlockClient({ lang, m, token, priceLabel, maskedEmail, payments
         </h2>
         <p>{!completed ? m.unlock.done_pending : failedDelivery ? m.unlock.done_delivery_failed : fmt(m.unlock.done_body, { email: maskedEmail })}</p>
         {completed && (
-          <a className="btn lg" href={`/api/purchase/download?t=${encodeURIComponent(token)}`} data-testid="download">
+          <a className="btn lg" href={`/api/purchase/download?t=${encodeURIComponent(token)}${orderId ? `&o=${encodeURIComponent(orderId)}` : ""}`} data-testid="download">
             <IconDownload /> {m.unlock.download}
           </a>
         )}

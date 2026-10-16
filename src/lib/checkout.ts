@@ -1,9 +1,11 @@
 import "server-only";
 import type { Locale } from "@/lib/i18n/config";
 import type { EngineInputs } from "@/lib/engine/types";
-import { paypalConfig, reportPrice } from "@/lib/env";
+import { adminNoticeEmail, paypalConfig, reportPrice } from "@/lib/env";
+import { ownerPaypalEventEmail } from "@/lib/email/templates";
+import { sendEmail } from "@/lib/email/resend";
 import { fulfill, sealPayload, type PurchasePayload } from "@/lib/fulfillment";
-import { PaypalError, captureOrder, createOrder, getOrder, judgeOrder, type PaypalOrder } from "@/lib/paypal";
+import { PaypalError, captureOrder, createOrder, getOrder, judgeOrder, normalizeAmount, type PaypalOrder } from "@/lib/paypal";
 import { getPurchaseRepo, publicStatus, type Purchase, type PurchaseRepo } from "@/lib/purchases";
 import { TokenError, emailHash, open } from "@/lib/token";
 
@@ -54,6 +56,68 @@ function assertOwnership(purchase: Purchase, data: UnlockData): void {
   if (purchase.report_id !== data.rid) throw new CheckoutFailure("purchase_mismatch", 403);
 }
 
+/** Compra reconstruida desde el token (modo sin base de datos): el token ya lleva email, inputs e idioma cifrados. */
+function synthPurchase(data: UnlockData, termsAccepted: boolean): Purchase {
+  const price = reportPrice();
+  const now = new Date().toISOString();
+  const payload: PurchasePayload = { rid: data.rid, email: data.email, locale: data.locale, inputs: data.inputs, oc: data.oc };
+  return {
+    id: data.rid,
+    report_id: data.rid,
+    email_hash: emailHash(data.email),
+    payload_ciphertext: sealPayload(payload),
+    locale: data.locale,
+    payment_status: "AWAITING_PAYMENT",
+    fulfillment_status: "NOT_STARTED",
+    paypal_order_id: null,
+    paypal_capture_id: null,
+    amount: price.value,
+    currency: price.currency,
+    env: paypalConfig().env,
+    terms_accepted_at: termsAccepted ? now : null,
+    consent_owner_copy: data.oc,
+    last_error: null,
+    fulfillment_claimed_at: null,
+    paid_at: null,
+    fulfilled_at: null,
+    created_at: now,
+    updated_at: now,
+  };
+}
+
+async function resolvePurchase(repo: PurchaseRepo, purchaseId: string, data: UnlockData, termsAccepted: boolean): Promise<Purchase | null> {
+  const p = await repo.get(purchaseId);
+  if (p) return p;
+  if (repo.stateless && purchaseId === data.rid) {
+    const synth = synthPurchase(data, termsAccepted);
+    repo.seed?.(synth);
+    return (await repo.get(purchaseId)) ?? synth;
+  }
+  return null;
+}
+
+/**
+ * Verifica contra PayPal que la orden esté pagada (COMPLETED, no reembolsada) y pertenezca a este informe.
+ * Es el libro contable del modo sin base de datos. Las órdenes solo las crea este servidor, así que
+ * custom_id + captura COMPLETED bastan; el importe se compara con el de la propia orden.
+ */
+export async function verifyPaidOrder(data: UnlockData, orderId: string, fetchImpl: typeof fetch = fetch): Promise<boolean> {
+  try {
+    const order = await getOrder(orderId, fetchImpl);
+    const unit = order.purchase_units?.[0];
+    const verdict = judgeOrder(order, {
+      purchaseId: data.rid,
+      orderId,
+      amount: normalizeAmount(unit?.amount?.value),
+      currency: unit?.amount?.currency_code ?? "",
+      merchantId: paypalConfig().merchantId || undefined,
+    });
+    return verdict.kind === "completed";
+  } catch {
+    return false;
+  }
+}
+
 export async function startPurchase(unlockToken: string, acceptTerms: boolean): Promise<{ purchase: Purchase; created: boolean }> {
   const repo = repoOrThrow();
   const data = openUnlock(unlockToken);
@@ -80,12 +144,21 @@ export async function startPurchase(unlockToken: string, acceptTerms: boolean): 
   return { purchase: await repo.update(created.id, { terms_accepted_at: new Date().toISOString() }), created: true };
 }
 
-export async function createPaypalOrder(purchaseId: string, unlockToken: string, fetchImpl: typeof fetch = fetch): Promise<{ orderId: string }> {
+export async function createPaypalOrder(
+  purchaseId: string,
+  unlockToken: string,
+  opts: { acceptTerms?: boolean; fetchImpl?: typeof fetch } = {},
+): Promise<{ orderId: string }> {
+  const fetchImpl = opts.fetchImpl ?? fetch;
   const repo = repoOrThrow();
   const data = openUnlock(unlockToken);
-  const purchase = await repo.get(purchaseId);
+  let purchase = await resolvePurchase(repo, purchaseId, data, opts.acceptTerms === true);
   if (!purchase) throw new CheckoutFailure("purchase_not_found", 404);
   assertOwnership(purchase, data);
+  // sin base de datos no hay registro previo de los términos: los confirma el cliente en esta misma petición
+  if (repo.stateless && !purchase.terms_accepted_at && opts.acceptTerms === true) {
+    purchase = await repo.update(purchase.id, { terms_accepted_at: new Date().toISOString() });
+  }
   if (!purchase.terms_accepted_at) throw new CheckoutFailure("terms_required", 422);
   if (purchase.payment_status === "COMPLETED") throw new CheckoutFailure("already_paid", 409);
   if (purchase.paypal_order_id && purchase.payment_status === "AWAITING_PAYMENT") return { orderId: purchase.paypal_order_id };
@@ -131,9 +204,13 @@ export async function settleOrder(purchase: Purchase, order: PaypalOrder, repo: 
 export async function captureAndFulfill(a: { purchaseId: string; orderId: string; unlockToken: string }, fetchImpl: typeof fetch = fetch): Promise<SettleResult> {
   const repo = repoOrThrow();
   const data = openUnlock(a.unlockToken);
-  const purchase = await repo.get(a.purchaseId);
+  let purchase = await resolvePurchase(repo, a.purchaseId, data, true);
   if (!purchase) throw new CheckoutFailure("purchase_not_found", 404);
   assertOwnership(purchase, data);
+  if (repo.stateless && !purchase.paypal_order_id) {
+    // otra instancia creó la orden: se enlaza aquí; judgeOrder valida custom_id, importe, moneda y merchant
+    purchase = await repo.update(purchase.id, { paypal_order_id: a.orderId });
+  }
   if (purchase.paypal_order_id !== a.orderId) throw new CheckoutFailure("order_mismatch", 409);
   if (purchase.payment_status === "COMPLETED") {
     const f = await fulfill(purchase);
@@ -198,22 +275,31 @@ export async function handleWebhookEvent(event: WebhookEvent, fetchImpl: typeof 
       if (!ok) await repo.forgetWebhookEvent(event.id);
       return ok;
     }
+    const notifyOwner = async () => {
+      if (!repo.stateless) return;
+      const mail = ownerPaypalEventEmail({ type, eventId: event.id ?? "", resourceId: res.id ?? "" });
+      await sendEmail({ to: adminNoticeEmail(), subject: mail.subject, html: mail.html, text: mail.text, idempotencyKey: `gp-evt-${event.id}` }, fetchImpl);
+    };
     if (type === "PAYMENT.CAPTURE.PENDING") {
+      await notifyOwner();
       const p = await findPurchase();
       if (p && p.payment_status !== "COMPLETED") await repo.update(p.id, { payment_status: "PENDING" });
       return true;
     }
     if (type === "PAYMENT.CAPTURE.DENIED" || type === "PAYMENT.CAPTURE.DECLINED") {
+      await notifyOwner();
       const p = await findPurchase();
       if (p && p.payment_status !== "COMPLETED") await repo.update(p.id, { payment_status: "FAILED", last_error: type.toLowerCase() });
       return true;
     }
     if (type === "PAYMENT.CAPTURE.REFUNDED" || type === "PAYMENT.CAPTURE.REVERSED") {
+      await notifyOwner();
       const p = (res.id ? await repo.findByCapture(res.id) : null) ?? (await findPurchase());
       if (p) await repo.update(p.id, { payment_status: "REFUNDED" });
       return true;
     }
     if (type === "CUSTOMER.DISPUTE.CREATED") {
+      await notifyOwner();
       const cap = res.disputed_transactions?.[0]?.seller_transaction_id;
       const p = cap ? await repo.findByCapture(cap) : null;
       if (p) await repo.update(p.id, { payment_status: "DISPUTED" });

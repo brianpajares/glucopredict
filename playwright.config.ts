@@ -13,8 +13,7 @@ export const E2E_ENV = {
   RESEND_API_KEY: "re_e2e_1234567890",
   OWNER_EMAIL: "dueno@dominio-prueba.test",
   REPORT_TOKEN_SECRET: "e2e-secret-e2e-secret-e2e-secret-0123456789",
-  SUPABASE_URL: "https://e2e-project.supabase.co",
-  SUPABASE_SERVICE_ROLE_KEY: "e2e-service-role-key-e2e-service-role-key",
+  PURCHASE_STORAGE: "stateless",
   NEXT_PUBLIC_APP_URL: `http://localhost:${PORT}`,
   REPORT_PRICE_USD: "9.00",
 };

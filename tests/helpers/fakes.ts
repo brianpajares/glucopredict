@@ -35,6 +35,7 @@ export interface Net {
   orders: Map<string, FakeOrder>;
   signatureValid: boolean;
   calls: string[];
+  idempotencyKeys: Map<string, string>;
 }
 
 export interface FakeOrder {
@@ -61,6 +62,7 @@ export function installNet(): Net {
     orders: new Map(),
     signatureValid: true,
     calls: [],
+    idempotencyKeys: new Map(),
   };
 
   const orderJson = (o: FakeOrder) => ({
@@ -124,8 +126,13 @@ export function installNet(): Net {
       if (net.resendDown) return res(500, { name: "internal_server_error", message: "down" });
       const p = body as { to: string[]; subject: string; attachments?: { filename: string; content: string }[] };
       const headers = init?.headers as Record<string, string>;
-      net.sent.push({ to: p.to, subject: p.subject, attachments: p.attachments ?? [], idempotencyKey: headers["Idempotency-Key"] ?? null });
-      return res(200, { id: `em_${net.sent.length}` });
+      const key = headers["Idempotency-Key"] ?? null;
+      // Resend deduplica por Idempotency-Key (24 h): la segunda petición devuelve la respuesta original sin reenviar
+      if (key && net.idempotencyKeys.has(key)) return res(200, { id: net.idempotencyKeys.get(key) });
+      net.sent.push({ to: p.to, subject: p.subject, attachments: p.attachments ?? [], idempotencyKey: key });
+      const id = `em_${net.sent.length}`;
+      if (key) net.idempotencyKeys.set(key, id);
+      return res(200, { id });
     }
     return res(404, { name: "unexpected_url", message: url });
   });

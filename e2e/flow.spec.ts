@@ -36,6 +36,8 @@ test.describe("landing y navegación", () => {
     const j = JSON.parse(text);
     expect(j.integrations.resend_api_key).toBe("ok");
     expect(j.payments.env).toBe("sandbox");
+    expect(j.payments.storage).toBe("stateless");
+    expect(j.payments.enabled).toBe(true);
     expect(j.payments.live_blocked).toBe(false);
   });
 
@@ -210,7 +212,7 @@ test.describe("desbloqueo y pago (PayPal simulado)", () => {
 
   test("descarga sin pago → 402 (la compra no existe o no está COMPLETED)", async ({ request }) => {
     const r = await request.get(`/api/purchase/download?t=${token}`);
-    expect([402, 500, 503]).toContain(r.status());
+    expect(r.status()).toBe(402);
   });
 
   test("ejemplo de vista previa: PDF sintético disponible", async ({ request }) => {

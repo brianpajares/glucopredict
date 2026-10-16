@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   }
   if (!parsed.success) return json(400, { error: "invalid_request" });
   try {
-    const { orderId } = await createPaypalOrder(parsed.data.purchase_id, parsed.data.unlock_token);
+    const { orderId } = await createPaypalOrder(parsed.data.purchase_id, parsed.data.unlock_token, { acceptTerms: parsed.data.accept_terms });
     return json(200, { order_id: orderId });
   } catch (e) {
     if (e instanceof CheckoutFailure) return json(e.http, { error: e.code });
