@@ -11,7 +11,7 @@ export type Block =
   | { t: "p"; text: string; free?: boolean; muted?: boolean; small?: boolean }
   | { t: "bullets"; items: string[]; free?: boolean }
   | { t: "kv"; rows: [string, string][]; free?: boolean }
-  | { t: "table"; head: string[]; rows: string[][]; widths: number[]; highlightRow?: number; lockFirstCol?: boolean }
+  | { t: "table"; head: string[]; rows: string[][]; widths: number[]; highlightRow?: number; lockFirstCol?: boolean; grid?: boolean; minRowH?: number }
   | { t: "bars"; rows: { label: string; value: number; max: number }[] }
   | { t: "scorebar"; score: number }
   | { t: "kpis"; items: { label: string; value: string; locked?: boolean }[]; free?: boolean }
@@ -363,6 +363,8 @@ export function buildReport(ctx: ReportContext): ReportDocument {
         head: c.tracker.head,
         widths: [0.1, 0.2, 0.18, 0.14, 0.14, 0.24],
         lockFirstCol: true,
+        grid: true,
+        minRowH: 34,
         rows: Array.from({ length: 12 }, (_, w) => [String(w + 1), "", "", "", "", ""]),
       },
       { t: "p", muted: true, small: true, text: c.tracker.footer },

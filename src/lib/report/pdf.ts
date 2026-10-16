@@ -331,7 +331,7 @@ class Layout {
     const drawRow = (cells: string[], isHead: boolean, rowIndex: number) => {
       const wrapped = cells.map((cell, i) => this.wrap(cell, isHead ? this.bold : this.regular, size, widths[i] - padX * 2));
       const lines = Math.max(1, ...wrapped.map((w) => w.length));
-      const h = lines * lh + padY * 2;
+      const h = Math.max(lines * lh + padY * 2, isHead ? 0 : (b.minRowH ?? 0));
       this.ensure(h);
       const hl = !isHead && b.highlightRow === rowIndex;
       if (isHead) this.page.drawRectangle({ x: M.left, y: this.y - h, width: CONTENT_W, height: h, color: C.subtle });
@@ -349,6 +349,13 @@ class Layout {
         }
         x += widths[i];
       });
+      if (b.grid) {
+        let gx = M.left;
+        for (let i = 0; i <= widths.length; i++) {
+          this.page.drawLine({ start: { x: gx, y: this.y }, end: { x: gx, y: this.y - h }, thickness: 0.4, color: C.border });
+          gx += widths[i] ?? 0;
+        }
+      }
       this.y -= h;
     };
     if (hasHead) drawRow(b.head, true, -1);
