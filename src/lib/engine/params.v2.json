@@ -1,0 +1,124 @@
+{
+ "model_version": "2.0",
+ "source": "drive/base/base_glucopredict.xlsx (Parametros, Tablas_Score, Tablas_Paises)",
+ "parameters": {
+  "age_cut_1": 45,
+  "age_cut_2": 55,
+  "age_cut_3": 65,
+  "age_pts_0": 0,
+  "age_pts_1": 2,
+  "age_pts_2": 3,
+  "age_pts_3": 4,
+  "bmi_cut_1": 25,
+  "bmi_cut_2": 30,
+  "bmi_pts_0": 0,
+  "bmi_pts_1": 1,
+  "bmi_pts_2": 3,
+  "la_waist_m_cut": 94,
+  "la_waist_f_cut": 90,
+  "la_waist_pts_low": 0,
+  "la_waist_pts_high": 4,
+  "fi_waist_m_cut1": 94,
+  "fi_waist_m_cut2": 102,
+  "fi_waist_f_cut1": 80,
+  "fi_waist_f_cut2": 88,
+  "fi_waist_pts_0": 0,
+  "fi_waist_pts_1": 3,
+  "fi_waist_pts_2": 4,
+  "inactive_pts": 2,
+  "not_daily_fv_pts": 1,
+  "antihypertensive_pts": 2,
+  "high_glucose_history_pts": 5,
+  "family_second_degree_pts": 3,
+  "family_first_degree_pts": 5,
+  "score_max": 26
+ },
+ "bands": [
+  {
+   "min": 0,
+   "max": 6,
+   "band": "bajo",
+   "reference_10y_pct": 1.0,
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  {
+   "min": 7,
+   "max": 11,
+   "band": "ligeramente_elevado",
+   "reference_10y_pct": 4.0,
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  {
+   "min": 12,
+   "max": 14,
+   "band": "moderado",
+   "reference_10y_pct": 17.0,
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  {
+   "min": 15,
+   "max": 20,
+   "band": "alto",
+   "reference_10y_pct": 33.0,
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  {
+   "min": 21,
+   "max": 26,
+   "band": "muy_alto",
+   "reference_10y_pct": 50.0,
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  }
+ ],
+ "countries": {
+  "PE": {
+   "name": "Perú",
+   "variant": "LA_FINDRISC",
+   "followup_threshold": 11,
+   "status": "verificado",
+   "note": "PLOS 2024: trabajadores hospitalarios; no generalizar como calibración nacional",
+   "source_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0299674"
+  },
+  "MX": {
+   "name": "México",
+   "variant": "LA_FINDRISC",
+   "followup_threshold": 12,
+   "status": "preliminar",
+   "note": "Umbral operativo provisional; requiere validación local antes de claim clínico",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  "BR": {
+   "name": "Brasil",
+   "variant": "LA_FINDRISC",
+   "followup_threshold": 12,
+   "status": "preliminar",
+   "note": "Umbral operativo provisional; requiere validación local",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  "CO": {
+   "name": "Colombia",
+   "variant": "LA_FINDRISC",
+   "followup_threshold": 12,
+   "status": "preliminar",
+   "note": "Umbral operativo conservador; estudios locales reportan otros cortes",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  "ES": {
+   "name": "España",
+   "variant": "FINDRISC",
+   "followup_threshold": 12,
+   "status": "preliminar",
+   "note": "Perfil original; umbral operativo provisional para CTA, no diagnóstico",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  },
+  "DEFAULT_LATAM": {
+   "name": "Latinoamérica",
+   "variant": "LA_FINDRISC",
+   "followup_threshold": 12,
+   "status": "preliminar",
+   "note": "Fallback de producto; no publicar como umbral clínico país-específico",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7202717/"
+  }
+ },
+ "checksum_sha256": "70fcfdc52ad8e573d6b39637a1751059b01b3c244e9b75e32bc5fec74b7ab55d"
+}

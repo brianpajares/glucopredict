@@ -1,23 +1,49 @@
 # GlucoPredict
 
-GlucoPredict is an educational risk screener based on the supplied FINDRISC / LA-FINDRISC specification. It is not a diagnosis, does not estimate an individual's calibrated probability, and does not provide treatment advice.
+GlucoPredict es una herramienta **educativa de cribado** basada en FINDRISC / LA-FINDRISC: calcula un score de 0 a 26, una banda histórica y orienta si conviene confirmar con una prueba clínica. **No diagnostica diabetes**, no estima una probabilidad personal y no da consejo de tratamiento.
 
-## Current release: validation preview
+## Qué hace la aplicación
 
-This repository contains the supplied self-contained UX prototype as `index.html` and the stage 4 product specification. The preview runs entirely in the browser. Its report email form is a demonstration: it does not transmit or persist email addresses or screening answers. Payment is intentionally disabled while demand, local validation, legal/privacy review, and instrument licensing are unresolved.
+1. **Calculadora gratuita** (landing → wizard de 10 pasos → resultado) en es / en / pt. El score, la banda, el gráfico, el factor principal y la recomendación de seguimiento son **siempre gratis**.
+2. **Informe completo de 10+ páginas (PDF)**: desglose de los 8 componentes, escenarios de la regla, contexto de país, pruebas de confirmación, plan educativo de 12 semanas, hoja de seguimiento, resumen y preguntas para la consulta, metodología y fuentes.
+3. **Dos modos** (`MONETIZATION_MODE`):
+   - `validation` (por defecto, PRD §17): el informe completo se envía gratis por email.
+   - `paypal`: el usuario recibe una **vista previa borrosa** (el contenido bloqueado nunca se escribe en el PDF) y un enlace privado de desbloqueo; paga con PayPal/tarjeta y recibe el PDF completo por email. Solo se activa si PayPal + Supabase + Resend + `REPORT_TOKEN_SECRET` están configurados.
+4. **Diagnóstico**: `GET /api/health` (sin secretos) dice qué está configurado y qué falta.
 
-The calculation currently follows the prototype's Peru profile. The score, band, and follow-up threshold remain educational and do not replace professional assessment. Do not use the preview for people under 18, pregnancy, known diabetes, emergencies, or treatment decisions.
+## Stack
 
-## Run locally
+Next.js (App Router) · TypeScript strict · pdf-lib · Resend (REST) · PayPal Checkout Orders v2 · Supabase (REST, service role solo servidor) · Vitest · Playwright · Vercel.
 
-Open `index.html` in a modern browser. No build tool or server is required for this validation preview.
+## Desarrollo
 
-## Deploy
+```bash
+npm install
+cp .env.example .env.local   # completa solo lo que necesites
+npm run dev
+```
 
-The repository is a static site and can be deployed on Vercel with the project root as the root directory and no build command. See `vercel.json` for response headers. The current preview is marked `noindex` until launch gates are completed.
+Comandos obligatorios antes de cerrar un cambio:
 
-## Before production
+```bash
+npm run lint && npm run typecheck && npm run test && npm run test:e2e && npm run build
+```
 
-The full product brief calls for a Next.js application, server-side report delivery, privacy controls, localization QA, exact parity with `spec/test_vectors.json`, and security/operational controls. Those production features are not present in this static preview. Complete `docs/LAUNCH_CHECKLIST.md` and the acceptance gates before collecting real health data, sending reports, enabling payments, or promoting the tool as a clinical service.
+- `npm test`: paridad del motor con `spec/test_vectors.json` (29 válidos + 9 inválidos, **gate bloqueante**), pagos con PayPal/Resend simulados, PDF y tokens.
+- `npm run test:e2e`: Playwright (construye y levanta la app con un entorno sintético; Chromium escritorio + móvil. `E2E_ALL_BROWSERS=1` añade Firefox y WebKit).
+- `npm run sample:pdf -- es`: genera PDFs de muestra (completo y vista previa) con un perfil sintético en `tmp-samples/`.
 
-Pricing figures in `spec/monetizacion.json` are hypotheses, not validated offers. Keep `MONETIZATION_MODE=validation`; do not activate checkout until the traction, margin, consent, licensing, and legal gates have been approved.
+## Puesta en marcha de correo y pagos
+
+- Correo: [`docs/EMAIL_SETUP.md`](docs/EMAIL_SETUP.md)
+- PayPal, Supabase y variables por entorno: [`docs/PAYPAL_SETUP.md`](docs/PAYPAL_SETUP.md)
+- Estado de la auditoría y decisiones: [`docs/AUDIT_2026-10-16.md`](docs/AUDIT_2026-10-16.md) y [`DECISIONS.md`](DECISIONS.md)
+- Antes de cobrar de verdad: [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md)
+
+## Reglas que no se negocian
+
+- Fuente de verdad: `docs/PRD.md` → `spec/` → `ux/`. El motor vive en `src/lib/engine` y la UI no contiene reglas del score.
+- Secretos solo en variables de entorno del servidor. Nunca en el repo, el cliente o los logs.
+- PayPal **LIVE** requiere `PAYPAL_ENV=live` **y** `PAYMENTS_LIVE_APPROVED=true`.
+- Fixtures sintéticos; nunca PII real. Sin datos clínicos en analítica ni en logs.
+- Los precios son hipótesis preliminares (`spec/monetizacion.json`), no precios validados.
